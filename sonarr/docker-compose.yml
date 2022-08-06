@@ -1,0 +1,24 @@
+version: "2.1"
+services:
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - ./config:/config
+      - ${STORAGE_PATH}/Series:/tv
+      - ${STORAGE_PATH}/downloads:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+
+networks:
+  default:
+    external:
+      name: apps
