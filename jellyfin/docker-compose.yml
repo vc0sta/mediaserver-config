@@ -6,6 +6,7 @@ services:
     volumes:
       - "./config:/config"
       - "./cache:/cache"
+      - "./css:/jellyfin/jellyfin-web/assets/css"
       - ${STORAGE_PATH}:/media
     restart: "unless-stopped"
     environment:

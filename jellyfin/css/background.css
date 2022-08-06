@@ -1,0 +1,23 @@
+/*Style backdrop*/
+.backdropImage {filter: blur(18px) saturate(120%) contrast(120%) brightness(40%);}
+
+
+.backgroundContainer {
+  background-image: url("background.jpg");
+  filter: blur(18px) saturate(120%) contrast(120%) brightness(40%);
+}
+
+/*Login background*/
+/*#loginPage {background: url(https://i.imgur.com/9vL4iNf.png) !important;}*/
+
+#loginPage {
+
+    background: url("background.jpg") !important;
+}
+
+.pageTitleWithDefaultLogo {
+    background-image: url('');
+}
+/*Accent and roundingd*/
+:root {--accent: 98, 121, 205;}
+:root {--rounding: 12px;}
