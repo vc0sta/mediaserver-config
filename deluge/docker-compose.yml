@@ -1,0 +1,27 @@
+---
+version: "2.1"
+services:
+  deluge:
+    image: ghcr.io/linuxserver/deluge
+    container_name: deluge
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+      - DELUGE_LOGLEVEL=info
+    volumes:
+      - './config:/config'
+      - ${STORAGE_PATH}/downloads:/downloads
+    ports:
+      - 58846:58846
+      - 8112:8112
+    restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+
+networks:
+  default:
+    external:
+      name: apps
+
