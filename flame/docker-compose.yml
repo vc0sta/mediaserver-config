@@ -1,0 +1,18 @@
+version: "2.1"
+services:
+  flame:
+    image: pawelmalak/flame:multiarch
+    container_name: flame
+    volumes:
+      - ./data:/app/data
+    ports:
+      - 5005:5005
+    restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+
+networks:
+  default:
+    external:
+      name: apps
