@@ -20,9 +20,10 @@ services:
     ports:
       - 1337:1337
     environment:
-      - BASE_URL=http://tasks.pi
+      - BASE_URL=https://tasks.vcosta.dev
       - DATABASE_URL=postgresql://postgres@postgres/planka
-      - SECRET_KEY=notsecretkey
+      - SECRET_KEY=notsecretkey  
+      - TRUST_PROXY=1
     depends_on:
       - postgres
 
