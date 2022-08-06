@@ -65,6 +65,16 @@ http {
 server {
     listen       80;
     server_name  hole{{ domain }};
+    return 301 https://$server_name$request_uri;
+    }
+
+server {
+    listen 443 ssl http2;
+    server_name  hole{{ domain }};
+        ssl_certificate {{ tls_chain }};
+        ssl_certificate_key {{ tls_privkey }};
+    ssl_session_cache builtin:1000;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     
     location / {
         proxy_pass http://pihole/admin/;
@@ -82,6 +92,16 @@ server {
 server {
     listen       80 default_server;
     server_name  home{{ domain }};
+    return 301 https://$server_name$request_uri;
+    }
+
+server {
+    listen 443 ssl http2;
+    server_name  home{{ domain }};
+        ssl_certificate {{ tls_chain }};
+        ssl_certificate_key {{ tls_privkey }};
+    ssl_session_cache builtin:1000;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
     location / {
         proxy_pass http://flame:5005;
@@ -99,6 +119,16 @@ server {
 server {
     listen       80;
     server_name  tasks{{ domain }};
+    return 301 https://$server_name$request_uri;
+    }
+
+server {
+    listen 443 ssl http2;
+    server_name  tasks{{ domain }};
+        ssl_certificate {{ tls_chain }};
+        ssl_certificate_key {{ tls_privkey }};
+    ssl_session_cache builtin:1000;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
     location / {
         proxy_pass http://planka:1337;
@@ -115,11 +145,44 @@ server {
     }
 }
 
+# Raneto
+server {
+    listen       80;
+    server_name  docs{{ domain }};
+    return 301 https://$server_name$request_uri;
+    }
+
+server {
+    listen 443 ssl http2;
+    server_name  docs{{ domain }};
+        ssl_certificate {{ tls_chain }};
+        ssl_certificate_key {{ tls_privkey }};
+    ssl_session_cache builtin:1000;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+    location / {
+        proxy_pass http://raneto:8989;
+	allow {{ network_cidr }};
+        deny all;
+
+
+    }
+}
 
 # Deluge
 server {
     listen       80;
     server_name  torrent{{ domain }};
+    return 301 https://$server_name$request_uri;
+    }
+
+server {
+    listen 443 ssl http2;
+    server_name  torrent{{ domain }};
+        ssl_certificate {{ tls_chain }};
+        ssl_certificate_key {{ tls_privkey }};
+    ssl_session_cache builtin:1000;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
     location / {
         proxy_pass http://deluge:8112;
@@ -134,6 +197,16 @@ server {
 server {
     listen       80;
     server_name  movies{{ domain }};
+    return 301 https://$server_name$request_uri;
+    }
+
+server {
+    listen 443 ssl http2;
+    server_name  movies{{ domain }};
+        ssl_certificate {{ tls_chain }};
+        ssl_certificate_key {{ tls_privkey }};
+    ssl_session_cache builtin:1000;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
     location / {
         proxy_pass http://radarr:7878;
@@ -148,6 +221,16 @@ server {
 server {
     listen       80;
     server_name  subtitles{{ domain }};
+    return 301 https://$server_name$request_uri;
+    }
+
+server {
+    listen 443 ssl http2;
+    server_name  subtitles{{ domain }};
+        ssl_certificate {{ tls_chain }};
+        ssl_certificate_key {{ tls_privkey }};
+    ssl_session_cache builtin:1000;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
     location / {
         proxy_pass http://bazarr:6767;
@@ -162,6 +245,16 @@ server {
 server {
     listen       80;
     server_name  series{{ domain }};
+    return 301 https://$server_name$request_uri;
+    }
+
+server {
+    listen 443 ssl http2;
+    server_name  series{{ domain }};
+        ssl_certificate {{ tls_chain }};
+        ssl_certificate_key {{ tls_privkey }};
+    ssl_session_cache builtin:1000;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
     location / {
         proxy_pass http://sonarr:8989;
@@ -176,6 +269,16 @@ server {
 server {
     listen       80;
     server_name  tracker{{ domain }};
+    return 301 https://$server_name$request_uri;
+    }
+
+server {
+    listen 443 ssl http2;
+    server_name  tracker{{ domain }};
+        ssl_certificate {{ tls_chain }};
+        ssl_certificate_key {{ tls_privkey }};
+    ssl_session_cache builtin:1000;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
     location / {
         proxy_pass http://jackett:9117;
@@ -195,6 +298,17 @@ server {
 server {
    listen       80;
    server_name  admin{{ domain }};
+    return 301 https://$server_name$request_uri;
+    }
+
+server {
+    listen 443 ssl http2;
+    server_name  admin{{ domain }};
+        ssl_certificate {{ tls_chain }};
+        ssl_certificate_key {{ tls_privkey }};
+    ssl_session_cache builtin:1000;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
    location / {
        proxy_pass http://portainer:9000;
        proxy_set_header   Upgrade            $http_upgrade;
@@ -210,12 +324,12 @@ server {
     # Replace EXAMPLE.COM with your domain
     server {
         listen 80;
-        server_name requests.vcosta.dev;
+        server_name requests{{ domain }};
         return 301 https://$server_name$request_uri;
     }
     server {
         listen 443 ssl http2;
-        server_name requests.vcosta.dev;
+        server_name requests{{ domain }};
         ssl_certificate {{ tls_chain }};
         ssl_certificate_key {{ tls_privkey }};
         ssl_session_cache builtin:1000;
@@ -254,7 +368,7 @@ server {
 server {
     listen 80;
     listen [::]:80;
-    server_name play.vcosta.dev;
+    server_name play{{ domain }};
 
     # Uncomment to redirect HTTP to HTTPS
      return 301 https://$host$request_uri;
@@ -263,7 +377,7 @@ server {
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
-    server_name play.vcosta.dev;
+    server_name play{{ domain }};
 
     # use a variable to store the upstream proxy
     # in this example we are using a hostname which is resolved via DNS
