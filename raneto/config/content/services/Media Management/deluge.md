@@ -12,7 +12,7 @@ Description: Torrent Service
 - [NGINX](#nginx)
 - [Related Tutorials](#related-tutorials)
 
-## Folder structure
+## Folder Structure
 
 ```
 deluge

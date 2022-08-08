@@ -12,10 +12,10 @@ Description: Subtitles Service
 - [NGINX](#nginx)
 - [Related Tutorials](#related-tutorials)
 
-## Folder structure
+## Folder Structure
 
 ```
-.
+bazarr
 ├── config                     # Service data
 ├── docker-compose.yml         # Service configuration
 └── update_libseccomp_rpi4.sh  # Script to install libseccomp on Raspberry Pi 4

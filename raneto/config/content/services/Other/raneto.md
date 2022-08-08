@@ -11,7 +11,7 @@ Description: Documentation Service
 - [NGINX](#nginx)
 - [Customization](#customization)
 - [Related Tutorials](#related-tutorials)
-## Folder structure
+## Folder Structure
 
 ```
 .

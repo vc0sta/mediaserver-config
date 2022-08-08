@@ -11,7 +11,7 @@ Description: Container Management Service
 - [NGINX](#nginx)
 
 
-## Folder structure
+## Folder Structure
 
 ```
 portainer

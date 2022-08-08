@@ -4,6 +4,7 @@ Description: Tracker Service
 */
 
 [Jackett](https://github.com/Jackett/Jackett) works as a proxy server: it translates queries from apps (Sonarr, SickRage, CouchPotato, Mylar, etc) into tracker-site-specific http queries, parses the html response, then sends results back to the requesting software. This allows for getting recent uploads (like RSS) and performing searches. Jackett is a single repository of maintained indexer scraping & translation logic - removing the burden from other apps.
+
 ## Table of contents
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
@@ -45,7 +46,7 @@ services:
 # Jackett
 server {
     listen       80;
-    server_name  tracker.vcosta.dev;
+    server_name  tracker.EXAMPLE.COM;
 
     location / {
         proxy_pass http://jackett:9117;
@@ -57,15 +58,15 @@ server {
 # Jackett
 server {
     listen       80;
-    server_name  tracker.vcosta.dev;
+    server_name  tracker.EXAMPLE.COM;
     return 301 https://$server_name$request_uri;
     }
 
 server {
     listen 443 ssl http2;
-    server_name  tracker.vcosta.dev;
-        ssl_certificate /etc/letsencrypt/live/vcosta.dev/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/vcosta.dev/privkey.pem;
+    server_name  tracker.EXAMPLE.COM;
+        ssl_certificate /etc/letsencrypt/live/EXAMPLE.COM/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/EXAMPLE.COM/privkey.pem;
     ssl_session_cache builtin:1000;
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 

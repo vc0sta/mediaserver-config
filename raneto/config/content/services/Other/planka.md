@@ -9,7 +9,7 @@ Description: Kanban Service
 - [Docker-compose](#docker-compose)
 - [NGINX](#nginx)
 - [Related Tutorials](#related-tutorials)
-## Folder structure
+## Folder Structure
 
 ```
 .
