@@ -12,7 +12,7 @@ Description: Kanban Service
 ## Folder Structure
 
 ```
-.
+planka
 ├── attachments
 ├── db-data
 ├── docker-compose.yml

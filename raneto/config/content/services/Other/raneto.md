@@ -14,7 +14,7 @@ Description: Documentation Service
 ## Folder Structure
 
 ```
-.
+raneto
 ├── config
 │   ├── content          # Markdown files - %base_dir%
 │   └── images           # Image files    - %image-dir%
