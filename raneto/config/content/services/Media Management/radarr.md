@@ -8,7 +8,6 @@ Description: Movies Service
 ## Table of contents
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
-- [Integration](#integration)
 - [NGINX](#nginx)
 - [Related Tutorials](#related-tutorials)
 
@@ -38,9 +37,7 @@ services:
       - 7878:7878
     restart: unless-stopped
 ```
-## Integration
 
-> TODO: Volume mapping diagram
 ## NGINX
 
 ### HTTP

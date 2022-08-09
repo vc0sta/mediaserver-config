@@ -8,7 +8,6 @@ Description: Series Service
 ## Table of contents
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
-- [Integration](#integration)
 - [NGINX](#nginx)
 - [Related Tutorials](#related-tutorials)
 
@@ -38,9 +37,6 @@ services:
       - 8989:8989
     restart: unless-stopped
 ```
-## Integration
-
-TODO: Volume mapping diagram
 ## NGINX
 ### HTTP
 

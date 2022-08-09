@@ -8,7 +8,6 @@ Description: Media Service
 ## Table of contents
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
-- [Integration](#integration)
 - [NGINX](#nginx)
 - [Related Tutorials](#related-tutorials)
 
@@ -43,18 +42,12 @@ services:
       - 8096:8096
       - 1900:1900
       - 7359:7359
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
 ```
 
 ```sh
 # .env
 STORAGE_PATH=/mnt/storage
 ```
-## Integration
-
-> TODO: Volume mapping diagram
 ## NGINX
 
 ### HTTP

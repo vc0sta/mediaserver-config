@@ -35,9 +35,6 @@ services:
       - 3579:3579
     restart: unless-stopped
 ```
-## Integration
-
-> TODO: Services Diagram
 
 ## NGINX
 

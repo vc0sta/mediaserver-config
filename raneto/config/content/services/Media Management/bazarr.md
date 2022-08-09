@@ -8,7 +8,6 @@ Description: Subtitles Service
 ## Table of contents
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
-- [Integration](#integration)
 - [NGINX](#nginx)
 - [Related Tutorials](#related-tutorials)
 
@@ -42,10 +41,6 @@ services:
       - 6767:6767
     restart: unless-stopped
 ```
-## Integration
-
-> TODO: Volume mapping diagram
-
 ## NGINX
 
 ### HTTP

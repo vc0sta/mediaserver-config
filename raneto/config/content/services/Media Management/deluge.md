@@ -8,7 +8,6 @@ Description: Torrent Service
 ## Table of contents
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
-- [Integration](#integration)
 - [NGINX](#nginx)
 - [Related Tutorials](#related-tutorials)
 
@@ -47,9 +46,7 @@ services:
 STORAGE_PATH=/mnt/storage
 TZ=America/Sao_Paulo
 ```
-## Integration
 
-> TODO: Volume mapping diagram
 ## NGINX
 
 ### HTTP
