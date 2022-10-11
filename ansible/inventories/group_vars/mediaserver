@@ -1,0 +1,55 @@
+ansible_connection: ssh
+
+# Services to deploy
+services: 
+  - name: bazarr
+    active: False
+    domain: subtitles
+
+  - name: deluge
+    active: False
+    domain: torrent
+
+  - name: flame
+    active: False
+    domain: home
+
+  - name: jackett
+    active: False
+    domain: tracker
+
+  - name: jellyfin
+    active: False
+    domain: play
+
+  - name: nginx
+    active: True
+    domain: nginx
+
+  - name: ombi
+    active: False
+    domain: requests
+
+  - name: pihole
+    active: False
+    domain: dns
+
+  - name: planka
+    active: False
+    domain: tasks
+
+  - name: portainer
+    active: False
+    domain: manage
+
+  - name: radarr
+    active: False
+    domain: movies
+
+  - name: raneto
+    active: False
+    domain: docs
+
+  - name: sonarr
+    active: False
+    domain: series
