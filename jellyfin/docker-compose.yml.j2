@@ -7,10 +7,10 @@ services:
       - "./config:/config"
       - "./cache:/cache"
       - "./css:/jellyfin/jellyfin-web/assets/css"
-      - ${STORAGE_PATH}:/media
+      - {{ storage_path }}:/media
     restart: "unless-stopped"
     environment:
-      - JELLYFIN_PublishedServerUrl=https://play.vcosta.dev
+      - JELLYFIN_PublishedServerUrl=http{{ 's' if use_ssl else '' }}://{{ server_url }}
       - UID=1000
       - GID=1000
     ports:
@@ -24,4 +24,4 @@ services:
 networks:
   default:
     external:
-      name: apps
+      name: {{ container_network_name }}

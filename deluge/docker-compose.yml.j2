@@ -7,11 +7,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=${TZ}
+      - TZ={{ timezone }}
       - DELUGE_LOGLEVEL=info
     volumes:
       - './config:/config'
-      - ${STORAGE_PATH}/downloads:/downloads
+      - {{ storage_path }}/downloads:/downloads
     ports:
       - 58846:58846
       - 8112:8112
@@ -23,5 +23,5 @@ services:
 networks:
   default:
     external:
-      name: apps
+      name: {{ container_network_name }}
 

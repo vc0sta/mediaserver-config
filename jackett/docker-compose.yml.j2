@@ -6,12 +6,12 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=${TZ}
+      - TZ={{ timezone }}
       - AUTO_UPDATE=true #optional
       - RUN_OPTS=<run options here> #optional
     volumes:
       - ./config:/config
-      - ${STORAGE_PATH}/torrents:/downloads
+      - {{ storage_path }}/torrents:/downloads
     ports:
       - 9117:9117
     restart: unless-stopped
@@ -22,4 +22,4 @@ services:
 networks:
   default:
     external:
-      name: apps
+      name: {{ container_network_name }}

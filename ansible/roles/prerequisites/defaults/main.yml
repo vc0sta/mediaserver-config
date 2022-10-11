@@ -1,0 +1,81 @@
+# Directories
+base_dir: '../../../..'
+target_dir: /home/vcosta/Documents/Repos/mediaserver-config/DEPLOYED_APP
+
+# Podman
+container_network_name: apps
+
+# Services to deploy
+services: 
+  - name: bazarr
+    active: True
+    domain: subtitles
+
+  - name: deluge
+    active: True
+    domain: torrent
+
+  - name: flame
+    active: True
+    domain: home
+
+  - name: jackett
+    active: True
+    domain: tracker
+
+  - name: jellyfin
+    active: True
+    domain: play
+
+  - name: nginx
+    active: True
+    domain: nginx
+
+  - name: ombi
+    active: True
+    domain: requests
+
+  - name: pihole
+    active: True
+    domain: dns
+
+  - name: planka
+    active: True
+    domain: tasks
+
+  - name: portainer
+    active: True
+    domain: manage
+
+  - name: radarr
+    active: True
+    domain: movies
+
+  - name: raneto
+    active: True
+    domain: docs
+
+  - name: sonarr
+    active: True
+    domain: series
+
+# General
+storage_path: /mnt/storage
+timezone: America/Sao_Paulo
+
+# Network
+domain: .vcosta.dev
+server_ip: 192.168.0.104
+network_cidr: 192.168.77.0/24
+
+# Nginx
+use_ssl: True
+tls_chain: /etc/letsencrypt/live/vcosta.dev/fullchain.pem
+tls_privkey: /etc/letsencrypt/live/vcosta.dev/privkey.pem
+
+# Jellyfin
+server_url: "play{{domain}}" # play.vcosta.dev
+
+# Pihole
+pihole_domain: hole.pi # TODO fix
+password: 'password'
