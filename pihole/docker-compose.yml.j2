@@ -12,10 +12,10 @@ services:
       - "8010:80/tcp"
       - "8443:443/tcp"
     environment:
-      ServerIP: ${SERVER_IP}
-      VIRTUAL_HOST: ${CUSTOM_DOMAIN}
-      TZ: ${TZ}
-      WEBPASSWORD: ${PASSWORD}
+      ServerIP: {{ server_ip }}
+      VIRTUAL_HOST: {{ pihole_domain }}
+      TZ: {{ timezone }}
+      WEBPASSWORD: {{ password }}
     volumes:
       - './etc-pihole/:/etc/pihole/'
       - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
@@ -31,4 +31,4 @@ services:
 networks:
   default:
     external:
-      name: apps
+      name: {{ container_network_name }}

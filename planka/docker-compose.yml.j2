@@ -20,7 +20,7 @@ services:
     ports:
       - 1337:1337
     environment:
-      - BASE_URL=https://tasks.vcosta.dev
+      - BASE_URL=http{{'s' if use_ssl else '' }}://{% for item in services %}{{ item.domain if item.name == 'planka' }}{% endfor %}{{ domain }}
       - DATABASE_URL=postgresql://postgres@postgres/planka
       - SECRET_KEY=notsecretkey  
       - TRUST_PROXY=1
@@ -40,4 +40,4 @@ services:
 networks:
   default:
     external:
-      name: apps
+      name: {{ container_network_name }}

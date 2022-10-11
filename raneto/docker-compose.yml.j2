@@ -7,7 +7,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Sao_Paulo
+      - TZ={{ timezone }}
     volumes:
       - ./config:/config
       - ./default:/app/raneto/themes/default
@@ -18,4 +18,4 @@ services:
 networks:
   default:
     external:
-      name: apps
+      name: {{ container_network_name }}

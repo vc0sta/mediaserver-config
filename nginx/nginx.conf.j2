@@ -32,7 +32,9 @@ http {
 	##
 
 	ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
-	ssl_prefer_server_ciphers on;
+	ssl_prefer_server_ciphers on;{% if use_ssl %}
+    ssl_certificate {{ tls_chain }};
+    ssl_certificate_key {{ tls_privkey }};{% endif %}
 
 	##
 	# Logging Settings
@@ -60,21 +62,19 @@ http {
 
 	include /etc/nginx/conf.d/*.conf;
 	include /etc/nginx/sites-enabled/*;
+{% if (services |  selectattr('name', 'search', 'pihole') | list | first).active %}
 
 # PiHole
 server {
     listen       80;
-    server_name  hole.vcosta.dev;
+    server_name  hole{{ domain }};
     return 301 https://$server_name$request_uri;
     }
 
 server {
     listen 443 ssl http2;
-    server_name  hole.vcosta.dev;
-        ssl_certificate /etc/letsencrypt/live/vcosta.dev/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/vcosta.dev/privkey.pem;
+    server_name  hole{{ domain }};
     ssl_session_cache builtin:1000;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     
     location / {
         proxy_pass http://pihole/admin/;
@@ -83,15 +83,15 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-Host $http_host;
-	allow 192.168.77.0/24;
+	    allow {{ network_cidr }};
         deny all;
    }
-}
+}{% endif %}{% if (services |  selectattr('name', 'search', 'flame') | list | first).active %}
 
 # Flame 
 server {
     listen 80 default_server;
-    server_name home.vcosta.dev home;
+    server_name home{{ domain }} home;
     return 301 https://$server_name$request_uri;
 }
 
@@ -102,12 +102,12 @@ map $http_upgrade $connection_upgrade {
 
 server {
         listen                  443 ssl;
-        server_name  home.vcosta.dev;
-        ssl_certificate /etc/letsencrypt/live/vcosta.dev/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/vcosta.dev/privkey.pem;
+        server_name  home{{ domain }};
+
+
 
         if ($host != $server_name) {
-            return 301 https://home.vcosta.dev$request_uri;
+            return 301 https://home{{ domain }}$request_uri;
         }
 
         location /socket {
@@ -115,21 +115,21 @@ server {
             proxy_set_header Connection "upgrade";
             proxy_http_version 1.1;
             proxy_pass http://flame:5005/socket;
-            allow 192.168.77.0/24;
+            allow {{ network_cidr }};
             deny all;
         }
 
         location / {
             proxy_pass http://flame:5005;
-            allow 192.168.77.0/24;
+            allow {{ network_cidr }};
             deny all;
         }
-}
+}{% endif %}{% if (services |  selectattr('name', 'search', 'planka') | list | first).active %}
 
 #  Planka
 server {
     listen 80;
-    server_name tasks.vcosta.dev tasks;
+    server_name tasks{{ domain }} tasks;
     return 301 https://$server_name$request_uri;
 }
 
@@ -140,12 +140,10 @@ map $http_upgrade $connection_upgrade {
 
 server {
         listen                  443 ssl;
-        server_name  tasks.vcosta.dev;
-        ssl_certificate /etc/letsencrypt/live/vcosta.dev/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/vcosta.dev/privkey.pem;
+        server_name  tasks{{ domain }};
 
         if ($host != $server_name) {
-            return 301 https://tasks.vcosta.dev$request_uri;
+            return 301 https://tasks{{ domain }}$request_uri;
         }
 
         location /socket.io {
@@ -153,148 +151,151 @@ server {
             proxy_set_header Connection "upgrade";
             proxy_http_version 1.1;
             proxy_pass http://planka:1337/socket.io;
-            allow 192.168.77.0/24;
+            allow {{ network_cidr }};
             deny all;
         }
 
         location / {
             proxy_pass http://planka:1337;
-            allow 192.168.77.0/24;
+            allow {{ network_cidr }};
             deny all;
         }
-}
+}{% endif %}{% if (services |  selectattr('name', 'search', 'raneto') | list | first).active %}
 
 # Raneto
 server {
     listen       80;
-    server_name  docs.vcosta.dev;
+    server_name  docs{{ domain }};
     return 301 https://$server_name$request_uri;
     }
 
 server {
     listen 443 ssl http2;
-    server_name  docs.vcosta.dev;
-        ssl_certificate /etc/letsencrypt/live/vcosta.dev/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/vcosta.dev/privkey.pem;
+    server_name  docs{{ domain }};
+
+
     ssl_session_cache builtin:1000;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    
 
     location / {
         proxy_pass http://raneto:3000;
-	allow 192.168.77.0/24;
+	allow {{ network_cidr }};
         deny all;
 
+
     }
-}
+}{% endif %}{% if (services |  selectattr('name', 'search', 'deluge') | list | first).active %}
 
 # Deluge
 server {
     listen       80;
-    server_name  torrent.vcosta.dev;
+    server_name  torrent{{ domain }};
     return 301 https://$server_name$request_uri;
     }
 
 server {
     listen 443 ssl http2;
-    server_name  torrent.vcosta.dev;
-        ssl_certificate /etc/letsencrypt/live/vcosta.dev/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/vcosta.dev/privkey.pem;
+    server_name  torrent{{ domain }};
+
+
     ssl_session_cache builtin:1000;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    
 
     location / {
         proxy_pass http://deluge:8112;
-	allow 192.168.77.0/24;
+	allow {{ network_cidr }};
         deny all;
 
 
     }
-}
+}{% endif %}{% if (services |  selectattr('name', 'search', 'radarr') | list | first).active %}
 
 # Radarr
 server {
     listen       80;
-    server_name  movies.vcosta.dev;
+    server_name  movies{{ domain }};
     return 301 https://$server_name$request_uri;
     }
 
 server {
     listen 443 ssl http2;
-    server_name  movies.vcosta.dev;
-        ssl_certificate /etc/letsencrypt/live/vcosta.dev/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/vcosta.dev/privkey.pem;
+    server_name  movies{{ domain }};
+
+
     ssl_session_cache builtin:1000;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    
 
     location / {
         proxy_pass http://radarr:7878;
-	allow 192.168.77.0/24;
+	allow {{ network_cidr }};
         deny all;
 
 
     }
-}
+}{% endif %}{% if (services |  selectattr('name', 'search', 'bazarr') | list | first).active %}
 
 # Bazarr
 server {
     listen       80;
-    server_name  subtitles.vcosta.dev;
+    server_name  subtitles{{ domain }};
     return 301 https://$server_name$request_uri;
     }
 
 server {
     listen 443 ssl http2;
-    server_name  subtitles.vcosta.dev;
-        ssl_certificate /etc/letsencrypt/live/vcosta.dev/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/vcosta.dev/privkey.pem;
+    server_name  subtitles{{ domain }};
+
+
     ssl_session_cache builtin:1000;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    
 
     location / {
         proxy_pass http://bazarr:6767;
-	allow 192.168.77.0/24;
+	allow {{ network_cidr }};
         deny all;
 
 
     }
-}
+}{% endif %}{% if (services |  selectattr('name', 'search', 'sonarr') | list | first).active %}
 
 # Sonarr
 server {
     listen       80;
-    server_name  series.vcosta.dev;
+    server_name  series{{ domain }};
     return 301 https://$server_name$request_uri;
     }
 
 server {
     listen 443 ssl http2;
-    server_name  series.vcosta.dev;
-        ssl_certificate /etc/letsencrypt/live/vcosta.dev/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/vcosta.dev/privkey.pem;
+    server_name  series{{ domain }};
+
+
     ssl_session_cache builtin:1000;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    
 
     location / {
         proxy_pass http://sonarr:8989;
-	allow 192.168.77.0/24;
+	allow {{ network_cidr }};
         deny all;
+
+
     }
-}
+}{% endif %}{% if (services |  selectattr('name', 'search', 'jackett') | list | first).active %}
 
 # Jackett
 server {
     listen       80;
-    server_name  tracker.vcosta.dev;
+    server_name  tracker{{ domain }};
     return 301 https://$server_name$request_uri;
     }
 
 server {
     listen 443 ssl http2;
-    server_name  tracker.vcosta.dev;
-        ssl_certificate /etc/letsencrypt/live/vcosta.dev/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/vcosta.dev/privkey.pem;
+    server_name  tracker{{ domain }};
+
+
     ssl_session_cache builtin:1000;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    
 
     location / {
         proxy_pass http://jackett:9117;
@@ -303,53 +304,53 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-Host $http_host;
         proxy_redirect off;
-	allow 192.168.77.0/24;
+	allow {{ network_cidr }};
         deny all;
 
 
     }
-}
+}{% endif %}{% if (services |  selectattr('name', 'search', 'portainer') | list | first).active %}
 
 # Portainer
 server {
    listen       80;
-   server_name  admin.vcosta.dev;
+   server_name  admin{{ domain }};
     return 301 https://$server_name$request_uri;
     }
 
 server {
     listen 443 ssl http2;
-    server_name  admin.vcosta.dev;
-        ssl_certificate /etc/letsencrypt/live/vcosta.dev/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/vcosta.dev/privkey.pem;
+    server_name  admin{{ domain }};
+
+
     ssl_session_cache builtin:1000;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    
 
    location / {
        proxy_pass http://portainer:9000;
        proxy_set_header   Upgrade            $http_upgrade;
        proxy_set_header   Connection         "upgrade";
-	allow 192.168.77.0/24;
+	allow {{ network_cidr }};
         deny all;
 
 
    }
-}
+}{% endif %}{% if (services |  selectattr('name', 'search', 'ombi') | list | first).active %}
 
  # Ombi v4 Subdomain
     # Replace EXAMPLE.COM with your domain
     server {
         listen 80;
-        server_name requests.vcosta.dev;
+        server_name requests{{ domain }};
         return 301 https://$server_name$request_uri;
     }
     server {
         listen 443 ssl http2;
-        server_name requests.vcosta.dev;
-        ssl_certificate /etc/letsencrypt/live/vcosta.dev/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/vcosta.dev/privkey.pem;
+        server_name requests{{ domain }};
+
+
         ssl_session_cache builtin:1000;
-        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        
         ssl_prefer_server_ciphers on;
         ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:ECDHE-RSA-DES-CBC3-SHA:ECDHE-ECDSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
         ssl_session_tickets off;
@@ -377,14 +378,14 @@ server {
         location /swagger {
                 proxy_pass http://ombi:3579;
         }
-    }
-
+    }{% endif %}{% if (services |  selectattr('name', 'search', 'jellyfin') | list | first).active %}
+    
 # Jellyfin
 # Uncomment the commented sections after you have acquired a SSL Certificate
 server {
     listen 80;
     listen [::]:80;
-    server_name play.vcosta.dev;
+    server_name play{{ domain }};
 
     # Uncomment to redirect HTTP to HTTPS
      return 301 https://$host$request_uri;
@@ -393,7 +394,7 @@ server {
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
-    server_name play.vcosta.dev;
+    server_name play{{ domain }};
 
     # use a variable to store the upstream proxy
     # in this example we are using a hostname which is resolved via DNS
@@ -401,8 +402,6 @@ server {
     set $jellyfin jellyfin;
     resolver 127.0.0.11 valid=30;
 
-    ssl_certificate /etc/letsencrypt/live/vcosta.dev/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/vcosta.dev/privkey.pem;
     #include /etc/letsencrypt/options-ssl-nginx.conf;
     #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
     add_header Strict-Transport-Security "max-age=31536000" always;
@@ -466,5 +465,5 @@ add_header Content-Security-Policy "default-src https: data: blob:; style-src 's
         proxy_set_header X-Forwarded-Protocol $scheme;
         proxy_set_header X-Forwarded-Host $http_host;
     }
-}
+}{% endif %}
 }

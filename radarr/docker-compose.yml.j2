@@ -6,11 +6,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=${TZ}
+      - TZ={{ timezone }}
     volumes:
       - ./config:/config
-      - ${STORAGE_PATH}/Movies:/movies
-      - ${STORAGE_PATH}/downloads:/downloads
+      - {{ storage_path }}/Movies:/movies
+      - {{ storage_path }}/downloads:/downloads
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -21,4 +21,4 @@ services:
 networks:
   default:
     external:
-      name: apps
+      name: {{ container_network_name }}

@@ -1,0 +1,46 @@
+---
+- name: Install podman
+  package:
+    name: podman
+    state: present
+  tags:
+    - prerequisites
+
+- name: Install podman-compose from pip
+  pip:
+    name: podman-compose
+    version: "{{ podman_compose_version | default(omit) }}"
+  tags:
+    - prerequisites
+
+- name: Create a podman network
+  containers.podman.podman_network:
+    name: "{{ container_network_name }}"
+  tags:
+    - prerequisites
+
+- name: ensure applications directory is in place
+  file:
+    path: "{{ target_dir }}/{{ item.name }}"
+    state: directory
+  when: item.active
+  with_items: "{{ services }}"
+  tags:
+    - prerequisites
+
+- name: Copy docker-compose files to each directory
+  template:
+    src: "{{ base_dir }}/{{ item.name }}/docker-compose.yml.j2"
+    dest: "{{ target_dir }}/{{ item.name }}/docker-compose.yml"
+  when: item.active
+  with_items: "{{ services }}"
+  tags:
+    - prerequisites
+
+- name: generate nginx config
+  template:
+    src: "{{ base_dir }}/nginx/nginx.conf.j2"
+    dest: "{{ target_dir }}/nginx/nginx.conf"
+  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+  tags:
+    - nginx
