@@ -1,6 +1,6 @@
 # Directories
 base_dir: '../../../..'
-target_dir: /home/vcosta/Documents/Repos/mediaserver-config/DEPLOYED_APP
+target_dir: /tmp/mediaserver
 
 # Podman
 container_network_name: apps
@@ -64,17 +64,17 @@ storage_path: /mnt/storage
 timezone: America/Sao_Paulo
 
 # Network
-domain: .vcosta.dev
+domain: .domain.dev
 server_ip: 192.168.0.104
 network_cidr: 192.168.77.0/24
 
 # Nginx
 use_ssl: True
-tls_chain: /etc/letsencrypt/live/vcosta.dev/fullchain.pem
-tls_privkey: /etc/letsencrypt/live/vcosta.dev/privkey.pem
+tls_chain: /etc/letsencrypt/live/domain.dev/fullchain.pem
+tls_privkey: /etc/letsencrypt/live/domain.dev/privkey.pem
 
 # Jellyfin
-server_url: "play{{domain}}" # play.vcosta.dev
+server_url: "play{{domain}}" # play.domain.dev
 
 # Pihole
 pihole_domain: hole.pi # TODO fix
