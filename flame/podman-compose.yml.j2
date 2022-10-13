@@ -6,7 +6,9 @@ services:
     volumes:
       - ./data:/app/data
     ports:
-      - 5005:5005
+{% for port in (services |  selectattr('name', 'search', 'flame') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
     restart: unless-stopped
     dns:
       - 8.8.8.8

@@ -13,8 +13,9 @@ services:
       - './config:/config'
       - {{ storage_path }}/downloads:/downloads
     ports:
-      - 58846:58846
-      - 8112:8112
+{% for port in (services |  selectattr('name', 'search', 'deluge') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
     restart: unless-stopped
     dns:
       - 8.8.8.8

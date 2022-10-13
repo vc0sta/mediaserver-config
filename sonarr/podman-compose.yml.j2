@@ -12,7 +12,9 @@ services:
       - {{ storage_path }}/Series:/tv
       - {{ storage_path }}/downloads:/downloads
     ports:
-      - 8989:8989
+{% for port in (services |  selectattr('name', 'search', 'sonarr') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
     restart: unless-stopped
     dns:
       - 8.8.8.8

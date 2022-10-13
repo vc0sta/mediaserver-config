@@ -10,57 +10,85 @@ services:
   - name: bazarr
     active: True
     domain: subtitles
+    ports:
+      - 6767:6767
 
   - name: deluge
     active: True
     domain: torrent
+    ports:
+      - 58846:58846
+      - 8112:8112
 
   - name: flame
     active: True
     domain: home
+    ports:
+      - 5005:5005
 
   - name: jackett
     active: True
     domain: tracker
+    ports:
+      - 9117:9117
 
   - name: jellyfin
     active: True
     domain: play
+    ports:
+      - 8096:8096
+      - 1900:1900
+      - 7359:7359
 
   - name: nginx
     active: True
     domain: nginx
+    ports:
+      - 12080:80
+      - 12443:443
 
   - name: ombi
     active: True
     domain: requests
+    ports:
+      - 3579:3579
 
   - name: pihole
     active: True
     domain: dns
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "8010:80/tcp"
+      - "8443:443/tcp"
 
   - name: planka
     active: True
     domain: tasks
-
-  - name: portainer
-    active: True
-    domain: manage
+    ports:
+      - 1337:1337
 
   - name: radarr
     active: True
     domain: movies
+    ports:
+      - 7878:7878
 
   - name: raneto
     active: True
     domain: docs
+    ports:
+      - 3000:3000
 
   - name: sonarr
     active: True
     domain: series
-
+    ports:
+      - 8989:8989
+      
 # General
-storage_path: /mnt/storage
+storage_path: /tmp/storage
 timezone: America/Sao_Paulo
 
 # Network
@@ -69,7 +97,7 @@ server_ip: 192.168.0.104
 network_cidr: 192.168.77.0/24
 
 # Nginx
-use_ssl: True
+use_ssl: False
 tls_chain: /etc/letsencrypt/live/domain.dev/fullchain.pem
 tls_privkey: /etc/letsencrypt/live/domain.dev/privkey.pem
 

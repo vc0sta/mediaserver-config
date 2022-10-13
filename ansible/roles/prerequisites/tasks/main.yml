@@ -24,10 +24,10 @@
   tags:
     - prerequisites
 
-- name: Copy docker-compose files to each directory
+- name: Copy podman-compose files to each directory
   template:
-    src: "{{ base_dir }}/{{ item.name }}/docker-compose.yml.j2"
-    dest: "{{ target_dir }}/{{ item.name }}/docker-compose.yml"
+    src: "{{ base_dir }}/{{ item.name }}/podman-compose.yml.j2"
+    dest: "{{ target_dir }}/{{ item.name }}/podman-compose.yml"
   when: item.active
   with_items: "{{ services }}"
   tags:
@@ -49,26 +49,22 @@
   with_items:
     - config
     - default
+  become: yes
   tags:
     - raneto
 
 - name: Stop podman containers
-  shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/docker-compose.yml down"
+  shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/podman-compose.yml down"
   ignore_errors: yes
   with_items: "{{ services }}"
   tags:
     - stop
 
-# - name: Delete containers
-#   shell: "podman rm {{ item.name }}"
-#   with_items: "{{ services }}"
-#   ignore_errors: yes
-#   tags:
-#     - start
-
 - name: Start podman containers
-  shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/docker-compose.yml up -d"
+  shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/podman-compose.yml up -d"
   when: item.active
   with_items: "{{ services }}"
   tags:
     - start
+  async: 60
+  poll: 0

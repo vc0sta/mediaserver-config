@@ -11,7 +11,9 @@ services:
     volumes:
       - ./config:/config
     ports:
-      - 3579:3579
+{% for port in (services |  selectattr('name', 'search', 'ombi') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
     restart: unless-stopped
     dns:
       - 8.8.8.8

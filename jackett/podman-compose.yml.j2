@@ -13,7 +13,9 @@ services:
       - ./config:/config
       - {{ storage_path }}/torrents:/downloads
     ports:
-      - 9117:9117
+{% for port in (services |  selectattr('name', 'search', 'jackett') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
     restart: unless-stopped
     dns:
       - 8.8.8.8

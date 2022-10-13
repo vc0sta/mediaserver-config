@@ -309,32 +309,6 @@ server {
 
 
     }
-}{% endif %}{% if (services |  selectattr('name', 'search', 'portainer') | list | first).active %}
-
-# Portainer
-server {
-   listen       80;
-   server_name  admin{{ domain }};
-    return 301 https://$server_name$request_uri;
-    }
-
-server {
-    listen 443 {% if use_ssl %}ssl{% endif %} http2;
-    server_name  admin{{ domain }};
-
-
-    ssl_session_cache builtin:1000;
-    
-
-   location / {
-       proxy_pass http://portainer:9000;
-       proxy_set_header   Upgrade            $http_upgrade;
-       proxy_set_header   Connection         "upgrade";
-	allow {{ network_cidr }};
-        deny all;
-
-
-   }
 }{% endif %}{% if (services |  selectattr('name', 'search', 'ombi') | list | first).active %}
 
  # Ombi v4 Subdomain

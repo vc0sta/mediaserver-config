@@ -12,7 +12,9 @@ services:
       - {{ storage_path }}/Movies:/movies
       - {{ storage_path }}/downloads:/downloads
     ports:
-      - 7878:7878
+{% for port in (services |  selectattr('name', 'search', 'radarr') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
     restart: unless-stopped
     dns:
       - 8.8.8.8

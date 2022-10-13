@@ -12,7 +12,9 @@ services:
       - {{ storage_path }}/Movies:/movies
       - {{ storage_path }}/Series:/tv
     ports:
-      - 6767:6767
+{% for port in (services |  selectattr('name', 'search', 'bazarr') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
     restart: unless-stopped
     dns:
       - 8.8.8.8

@@ -12,7 +12,9 @@ services:
       - ./config:/config
       - ./default:/app/raneto/themes/default
     ports:
-      - 3000:3000
+{% for port in (services |  selectattr('name', 'search', 'raneto') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
     restart: unless-stopped
 
 networks:

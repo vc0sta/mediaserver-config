@@ -1,57 +1,86 @@
 ansible_connection: local
 
-use_ssl: false
+use_ssl: False
 
-# Services to deploy
+ Services to deploy
 services: 
   - name: bazarr
-    active: False
+    active: True
     domain: subtitles
+    ports:
+      - 6767:6767
 
   - name: deluge
-    active: False
+    active: True
     domain: torrent
+    ports:
+      - 58846:58846
+      - 8112:8112
 
   - name: flame
-    active: False
+    active: True
     domain: home
+    ports:
+      - 5005:5005
 
   - name: jackett
-    active: False
+    active: True
     domain: tracker
+    ports:
+      - 9117:9117
 
   - name: jellyfin
-    active: False
+    active: True
     domain: play
+    ports:
+      - 8096:8096
+      - 1900:1900
+      - 7359:7359
 
   - name: nginx
     active: True
     domain: nginx
+    ports:
+      - 12080:80
+      - 12443:443
 
   - name: ombi
-    active: False
+    active: True
     domain: requests
+    ports:
+      - 3579:3579
 
   - name: pihole
-    active: False
+    active: True
     domain: dns
+    ports:
+      - "8053:53/tcp"
+      - "8053:53/udp"
+      - "8067:67/udp"
+      - "8010:80/tcp"
+      - "8443:443/tcp"
 
   - name: planka
-    active: False
+    active: True
     domain: tasks
-
-  - name: portainer
-    active: False
-    domain: manage
+    ports:
+      - 1337:1337
 
   - name: radarr
-    active: False
+    active: True
     domain: movies
+    ports:
+      - 7878:7878
 
   - name: raneto
     active: True
     domain: docs
+    ports:
+      - 3000:3000
 
   - name: sonarr
-    active: False
+    active: True
     domain: series
+    ports:
+      - 8989:8989
+      
