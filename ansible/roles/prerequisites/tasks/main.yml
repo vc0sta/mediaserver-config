@@ -1,15 +1,11 @@
 ---
-- name: Install podman
+- name: Install podman and podman-compose
   package:
-    name: podman
+    name: "{{ item }}"
     state: present
-  tags:
-    - prerequisites
-
-- name: Install podman-compose from pip
-  pip:
-    name: podman-compose
-    version: "{{ podman_compose_version | default(omit) }}"
+  with_items:
+    - podman
+    - podman-compose
   tags:
     - prerequisites
 
@@ -44,3 +40,35 @@
   when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
   tags:
     - nginx
+
+- name: generate raneto config
+  synchronize:
+    src: "{{ base_dir }}/raneto/{{ item }}"
+    dest: "{{ target_dir }}/raneto/"
+  when: "{{ (services |  selectattr('name', 'search', 'raneto') | list | first).active }}"
+  with_items:
+    - config
+    - default
+  tags:
+    - raneto
+
+- name: Stop podman containers
+  shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/docker-compose.yml down"
+  ignore_errors: yes
+  with_items: "{{ services }}"
+  tags:
+    - stop
+
+# - name: Delete containers
+#   shell: "podman rm {{ item.name }}"
+#   with_items: "{{ services }}"
+#   ignore_errors: yes
+#   tags:
+#     - start
+
+- name: Start podman containers
+  shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/docker-compose.yml up -d"
+  when: item.active
+  with_items: "{{ services }}"
+  tags:
+    - start
