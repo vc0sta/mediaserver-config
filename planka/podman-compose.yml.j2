@@ -2,7 +2,7 @@ version: '3'
 
 services:
   planka:
-    image: meltyshev/planka:latest
+    image: docker.io/meltyshev/planka:latest
     container_name: planka
     command: >
       bash -c
@@ -34,7 +34,7 @@ services:
     container_name: planka_db
     restart: unless-stopped
     volumes:
-      - ./db-data:/var/lib/postgresql/data
+      - ./db-data:/var/lib/postgresql/data:Z
     environment:
       - POSTGRES_DB=planka
       - POSTGRES_HOST_AUTH_METHOD=trust
