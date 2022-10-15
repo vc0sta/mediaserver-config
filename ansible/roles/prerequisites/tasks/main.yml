@@ -1,5 +1,6 @@
 ---
 - name: Install podman and podman-compose
+  become: yes
   package:
     name: "{{ item }}"
     state: present
