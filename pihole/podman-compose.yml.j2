@@ -15,8 +15,8 @@ services:
       TZ: {{ timezone }}
       WEBPASSWORD: {{ password }}
     volumes:
-      - './etc-pihole/:/etc/pihole/'
-      - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
+      - ./etc-pihole/:/etc/pihole/:Z
+      - ./etc-dnsmasq.d/:/etc/dnsmasq.d/:Z
     # Recommended but not required (DHCP needs NET_ADMIN)
     #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
     cap_add:
