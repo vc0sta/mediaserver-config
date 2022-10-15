@@ -1,21 +1,25 @@
----
 version: "2.1"
 services:
-  ombi:
-    image: lscr.io/linuxserver/ombi:latest
-    container_name: ombi
+  bazarr:
+    image: ghcr.io/linuxserver/bazarr
+    container_name: bazarr
     environment:
       - PUID=1000
       - PGID=1000
       - TZ={{ timezone }}
     volumes:
       - ./config:/config
+      - {{ storage_path }}/Movies:/movies
+      - {{ storage_path }}/Series:/tv
     ports:
-      - 3579:3579
+{% for port in (services |  selectattr('name', 'search', 'bazarr') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
     restart: unless-stopped
     dns:
       - 8.8.8.8
       - 8.8.4.4
+
 networks:
   default:
     external:

@@ -1,11 +1,8 @@
-# Directories
-base_dir: '../../../..'
-target_dir: /tmp/mediaserver
+ansible_connection: local
 
-# Podman
-container_network_name: apps
+use_ssl: False
 
-# Services to deploy
+ Services to deploy
 services: 
   - name: bazarr
     active: True
@@ -57,9 +54,9 @@ services:
     active: True
     domain: dns
     ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "67:67/udp"
+      - "8053:53/tcp"
+      - "8053:53/udp"
+      - "8067:67/udp"
       - "8010:80/tcp"
       - "8443:443/tcp"
 
@@ -87,23 +84,3 @@ services:
     ports:
       - 8989:8989
       
-# General
-storage_path: /tmp/storage
-timezone: America/Sao_Paulo
-
-# Network
-domain: .domain.dev
-server_ip: 192.168.0.104
-network_cidr: 192.168.77.0/24
-
-# Nginx
-use_ssl: False
-tls_chain: /etc/letsencrypt/live/domain.dev/fullchain.pem
-tls_privkey: /etc/letsencrypt/live/domain.dev/privkey.pem
-
-# Jellyfin
-server_url: "play{{domain}}" # play.domain.dev
-
-# Pihole
-pihole_domain: hole.pi # TODO fix
-password: 'password'

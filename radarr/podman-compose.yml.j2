@@ -1,8 +1,8 @@
 version: "2.1"
 services:
-  bazarr:
-    image: ghcr.io/linuxserver/bazarr
-    container_name: bazarr
+  radarr:
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
     environment:
       - PUID=1000
       - PGID=1000
@@ -10,9 +10,11 @@ services:
     volumes:
       - ./config:/config
       - {{ storage_path }}/Movies:/movies
-      - {{ storage_path }}/Series:/tv
+      - {{ storage_path }}/downloads:/downloads
     ports:
-      - 6767:6767
+{% for port in (services |  selectattr('name', 'search', 'radarr') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
     restart: unless-stopped
     dns:
       - 8.8.8.8

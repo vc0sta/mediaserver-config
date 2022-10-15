@@ -1,22 +1,21 @@
+---
 version: "2.1"
 services:
-  sonarr:
-    image: ghcr.io/linuxserver/sonarr
-    container_name: sonarr
+  raneto:
+    image: lscr.io/linuxserver/raneto:latest
+    container_name: raneto
     environment:
       - PUID=1000
       - PGID=1000
       - TZ={{ timezone }}
     volumes:
       - ./config:/config
-      - {{ storage_path }}/Series:/tv
-      - {{ storage_path }}/downloads:/downloads
+      - ./default:/app/raneto/themes/default
     ports:
-      - 8989:8989
+{% for port in (services |  selectattr('name', 'search', 'raneto') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
     restart: unless-stopped
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
 
 networks:
   default:

@@ -6,11 +6,9 @@ services:
     container_name: pihole
     image: pihole/pihole:latest
     ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "67:67/udp"
-      - "8010:80/tcp"
-      - "8443:443/tcp"
+{% for port in (services |  selectattr('name', 'search', 'pihole') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
     environment:
       ServerIP: {{ server_ip }}
       VIRTUAL_HOST: {{ pihole_domain }}

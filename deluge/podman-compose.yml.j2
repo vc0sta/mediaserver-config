@@ -1,18 +1,21 @@
+---
 version: "2.1"
 services:
-  radarr:
-    image: ghcr.io/linuxserver/radarr
-    container_name: radarr
+  deluge:
+    image: ghcr.io/linuxserver/deluge
+    container_name: deluge
     environment:
       - PUID=1000
       - PGID=1000
       - TZ={{ timezone }}
+      - DELUGE_LOGLEVEL=info
     volumes:
-      - ./config:/config
-      - {{ storage_path }}/Movies:/movies
+      - './config:/config'
       - {{ storage_path }}/downloads:/downloads
     ports:
-      - 7878:7878
+{% for port in (services |  selectattr('name', 'search', 'deluge') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
     restart: unless-stopped
     dns:
       - 8.8.8.8
@@ -22,3 +25,4 @@ networks:
   default:
     external:
       name: {{ container_network_name }}
+
