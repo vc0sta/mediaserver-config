@@ -160,9 +160,9 @@ server {
             allow {{ network_cidr }};
             deny all;
         }
-}{% endif %}{% if (services |  selectattr('name', 'search', 'raneto') | list | first).active %}
+}{% endif %}{% if (services |  selectattr('name', 'search', 'mkdocs') | list | first).active %}
 
-# Raneto
+# Docs
 server {
     listen       80;
     server_name  docs{{ domain }};
@@ -178,7 +178,7 @@ server {
     
 
     location / {
-        proxy_pass http://raneto:3000;
+        proxy_pass http://mkdocs:8000;
 	allow {{ network_cidr }};
         deny all;
 

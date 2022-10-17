@@ -1,12 +1,12 @@
 # Directories
-base_dir: '../../../..'
+base_dir: "../../../.."
 target_dir: /tmp/mediaserver
 
 # Podman
 container_network_name: apps
 
 # Services to deploy
-services: 
+services:
   - name: bazarr
     active: True
     domain: subtitles
@@ -75,18 +75,18 @@ services:
     ports:
       - 7878:7878
 
-  - name: raneto
+  - name: mkdocs
     active: True
     domain: docs
     ports:
-      - 3000:3000
+      - 8000:8000
 
   - name: sonarr
     active: True
     domain: series
     ports:
       - 8989:8989
-      
+
 # General
 storage_path: /tmp/storage
 timezone: America/Sao_Paulo
@@ -106,4 +106,4 @@ server_url: "play{{domain}}" # play.domain.dev
 
 # Pihole
 pihole_domain: hole.pi # TODO fix
-password: 'password'
+password: "password"
