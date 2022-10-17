@@ -1,5 +1,5 @@
 # Directories
-base_dir: '../../../..'
+base_dir: "../../../.."
 target_dir: /tmp/mediaserver
 
 # Set to 0 if you want to bind Nginx to ports 80:443
@@ -10,7 +10,7 @@ ip_unprivileged_port_start: 1024
 container_network_name: apps
 
 # Services to deploy
-services: 
+services:
   - name: bazarr
     active: True
     domain: subtitles
@@ -79,12 +79,18 @@ services:
     ports:
       - 7878:7878
 
+  - name: mkdocs
+    active: True
+    domain: docs
+    ports:
+      - 8000:8000
+      
   - name: sonarr
     active: True
     domain: series
     ports:
       - 8989:8989
-      
+
 # General
 storage_path: /tmp/storage
 timezone: America/Sao_Paulo
@@ -105,4 +111,4 @@ server_url: "play.{{domain}}" # play.domain.local
 
 # Pihole
 pihole_domain: hole.pi # TODO fix
-password: 'password'
+password: "password"

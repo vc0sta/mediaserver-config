@@ -46,6 +46,16 @@
   tags:
     - prerequisites
 
+- name: generate docs
+  synchronize:
+    src: "{{ base_dir }}/mkdocs/{{ item }}"
+    dest: "{{ target_dir }}/mkdocs/"
+  when: "{{ (services |  selectattr('name', 'search', 'mkdocs') | list | first).active }}"
+  with_items:
+    - docs
+  tags:
+    - docs
+    
 - name: Stop podman containers
   shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/podman-compose.yml down"
   ignore_errors: yes

@@ -76,6 +76,12 @@ services:
     ports:
       - 7878:7878
 
+  - name: mkdocs
+    active: True
+    domain: docs
+    ports:
+      - 8000:8000
+      
   - name: sonarr
     active: False
     domain: series

@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mkdocs:
+    image: docker.io/squidfunk/mkdocs-material
+    container_name: mkdocs
+    ports:
+{% for port in (services |  selectattr('name', 'search', 'mkdocs') | list | first).ports %}
+      - {{ port }}
+{% endfor %}
+    volumes:
+      - ./docs:/docs:Z
+    restart: unless-stopped
+
+networks:
+  default:
+    external:
+      name: {{ container_network_name }}
