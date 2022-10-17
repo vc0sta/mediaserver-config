@@ -14,26 +14,26 @@ services:
       - 6767:6767
 
   - name: deluge
-    active: True
+    active: False
     domain: torrent
     ports:
       - 58846:58846
       - 8112:8112
 
   - name: flame
-    active: True
+    active: False
     domain: home
     ports:
       - 5005:5005
 
   - name: jackett
-    active: True
+    active: False
     domain: tracker
     ports:
       - 9117:9117
 
   - name: jellyfin
-    active: True
+    active: False
     domain: play
     ports:
       - 8096:8096
@@ -48,13 +48,13 @@ services:
       - 12443:443
 
   - name: ombi
-    active: True
+    active: False
     domain: requests
     ports:
       - 3579:3579
 
   - name: pihole
-    active: True
+    active: False
     domain: dns
     ports:
       - "53:53/tcp"
@@ -64,25 +64,19 @@ services:
       - "8443:443/tcp"
 
   - name: planka
-    active: True
+    active: False
     domain: tasks
     ports:
       - 1337:1337
 
   - name: radarr
-    active: True
+    active: False
     domain: movies
     ports:
       - 7878:7878
 
-  - name: raneto
-    active: True
-    domain: docs
-    ports:
-      - 3000:3000
-
   - name: sonarr
-    active: True
+    active: False
     domain: series
     ports:
       - 8989:8989

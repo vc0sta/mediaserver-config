@@ -72,12 +72,6 @@ services:
     ports:
       - 7878:7878
 
-  - name: raneto
-    active: True
-    domain: docs
-    ports:
-      - 3000:3000
-
   - name: sonarr
     active: True
     domain: series

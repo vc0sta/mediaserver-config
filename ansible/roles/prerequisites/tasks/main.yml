@@ -1,6 +1,6 @@
 ---
 - name: Install podman and podman-compose
-  become: yes
+  # become: yes
   package:
     name: "{{ item }}"
     state: present
@@ -34,26 +34,6 @@
   tags:
     - prerequisites
 
-- name: generate nginx config
-  template:
-    src: "{{ base_dir }}/nginx/nginx.conf.j2"
-    dest: "{{ target_dir }}/nginx/nginx.conf"
-  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
-  tags:
-    - nginx
-
-- name: generate raneto config
-  synchronize:
-    src: "{{ base_dir }}/raneto/{{ item }}"
-    dest: "{{ target_dir }}/raneto/"
-  when: "{{ (services |  selectattr('name', 'search', 'raneto') | list | first).active }}"
-  with_items:
-    - config
-    - default
-  become: yes
-  tags:
-    - raneto
-
 - name: Stop podman containers
   shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/podman-compose.yml down"
   ignore_errors: yes
@@ -63,9 +43,23 @@
 
 - name: Start podman containers
   shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/podman-compose.yml up -d"
-  when: item.active
+  when: item.active and item.name != 'nginx'
   with_items: "{{ services }}"
   tags:
     - start
   async: 60
-  poll: 0
+  poll: 5
+
+- name: generate nginx config
+  template:
+    src: "{{ base_dir }}/nginx/nginx.conf.j2"
+    dest: "{{ target_dir }}/nginx/nginx.conf"
+  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+  tags:
+    - nginx
+
+- name: Start nginx
+  shell: "podman-compose -f {{ target_dir }}/nginx/podman-compose.yml up -d"
+  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+  tags:
+    - nginx

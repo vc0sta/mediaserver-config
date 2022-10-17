@@ -101,7 +101,7 @@ map $http_upgrade $connection_upgrade {
 }
 
 server {
-        listen                  443 ssl;
+        listen                  443 {% if use_ssl %}ssl{% endif %};
         server_name  home{{ domain }};
 
 
@@ -139,7 +139,7 @@ map $http_upgrade $connection_upgrade {
 }
 
 server {
-        listen                  443 ssl;
+        listen                  443 {% if use_ssl %}ssl{% endif %};
         server_name  tasks{{ domain }};
 
         if ($host != $server_name) {
