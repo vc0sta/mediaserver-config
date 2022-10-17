@@ -1,6 +1,6 @@
 ---
 - name: Install podman and podman-compose
-  # become: yes
+  become: yes
   package:
     name: "{{ item }}"
     state: present
@@ -23,9 +23,11 @@
     name: net.ipv4.ip_unprivileged_port_start
     value: 0
     sysctl_set: yes
-    when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+  become: yes
   tags:
     - prerequisites
+
 - name: ensure applications directory is in place
   file:
     path: "{{ target_dir }}/{{ item.name }}"
@@ -53,7 +55,7 @@
 
 - name: Start podman containers
   shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/podman-compose.yml up -d"
-  when: item.active and item.name != 'nginx'
+  when: item.active
   with_items: "{{ services }}"
   tags:
     - start
@@ -69,7 +71,7 @@
     - nginx
 
 - name: Start nginx
-  shell: "podman-compose -f {{ target_dir }}/nginx/podman-compose.yml up -d"
+  shell: "podman-compose -f {{ target_dir }}/nginx/podman-compose.yml restart"
   when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
   tags:
     - nginx

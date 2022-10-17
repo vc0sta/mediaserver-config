@@ -11,7 +11,7 @@ services:
       - 6767:6767
 
   - name: deluge
-    active: True
+    active: False
     domain: torrent
     ports:
       - 58846:58846
@@ -30,7 +30,7 @@ services:
       - 9117:9117
 
   - name: jellyfin
-    active: False
+    active: True
     domain: play
     ports:
       - 8096:8096

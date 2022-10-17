@@ -86,17 +86,18 @@ storage_path: /tmp/storage
 timezone: America/Sao_Paulo
 
 # Network
-domain: .domain.dev
+domain: domain.local
 server_ip: 192.168.0.104
 network_cidr: 192.168.77.0/24
 
 # Nginx
 use_ssl: False
-tls_chain: /etc/letsencrypt/live/domain.dev/fullchain.pem
-tls_privkey: /etc/letsencrypt/live/domain.dev/privkey.pem
+tls_chain: /etc/letsencrypt/live/{{ domain }}/fullchain.pem
+tls_privkey: /etc/letsencrypt/live/{{ domain }}/privkey.pem
+tls_trusted_certificate: /etc/letsencrypt/live/{{ domain }}/chain.pem
 
 # Jellyfin
-server_url: "play{{domain}}" # play.domain.dev
+server_url: "play.{{domain}}" # play.domain.local
 
 # Pihole
 pihole_domain: hole.pi # TODO fix
