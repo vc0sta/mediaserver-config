@@ -8,7 +8,7 @@ services:
       - {{ port }}
 {% endfor %}
     volumes:
-      - .:/docs:Z
+      - ./docs:/docs:Z
     restart: unless-stopped
 
 networks:
