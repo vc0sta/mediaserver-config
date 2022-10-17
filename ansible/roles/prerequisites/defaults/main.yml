@@ -2,6 +2,10 @@
 base_dir: '../../../..'
 target_dir: /tmp/mediaserver
 
+# Set to 0 if you want to bind Nginx to ports 80:443
+# Systems default is 1024. Reference: https://sysctl-explorer.net/net/ipv4/ip_unprivileged_port_start/
+ip_unprivileged_port_start: 1024
+
 # Podman
 container_network_name: apps
 

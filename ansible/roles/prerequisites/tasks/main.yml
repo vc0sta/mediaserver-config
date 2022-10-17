@@ -21,7 +21,7 @@
 - name: Set unprivileged ports for podman to bind 80/433 to Nginx
   ansible.posix.sysctl:
     name: net.ipv4.ip_unprivileged_port_start
-    value: 0
+    value: "{{ ip_unprivileged_port_start }}"
     sysctl_set: yes
   when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
   become: yes
@@ -85,3 +85,8 @@
   become: yes
   tags:
    - post
+
+- debug:
+    msg: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first) }}"
+  tags:
+    - debug

@@ -2,6 +2,10 @@ ansible_connection: local
 
 use_ssl: False
 
+# Set to 0 if you want to bind Nginx to ports 80:443 (default is 1024); 
+# Reference: https://sysctl-explorer.net/net/ipv4/ip_unprivileged_port_start/
+ip_unprivileged_port_start: 1024
+
 #  Services to deploy
 services:
   - name: bazarr
@@ -38,7 +42,7 @@ services:
       - 7359:7359
 
   - name: nginx
-    active: True
+    active: False
     domain: nginx
     ports:
       - 80:80
@@ -73,7 +77,7 @@ services:
       - 7878:7878
 
   - name: sonarr
-    active: True
+    active: False
     domain: series
     ports:
       - 8989:8989
