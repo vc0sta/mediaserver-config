@@ -49,7 +49,6 @@
   when: "{{ (services |  selectattr('name', 'search', 'mkdocs') | list | first).active }}"
   with_items:
     - docs
-    - mkdocs.yml
   tags:
     - docs
 
