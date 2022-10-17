@@ -86,6 +86,15 @@
   tags:
     - nginx
 
+- name: Make sure to remove previous added lines
+  lineinfile:
+    path: /etc/hosts
+    state: absent
+    regexp: "{{ domain }}"
+  become: yes
+  tags:
+   - post
+
 - lineinfile:
     dest: /etc/hosts
     line: "{{ '127.0.0.1' if inventory_hostname == 'localhost' else inventory_hostname }} {{ item.domain }}.{{ domain }}"
@@ -95,8 +104,3 @@
   become: yes
   tags:
    - post
-
-- debug:
-    msg: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first) }}"
-  tags:
-    - debug

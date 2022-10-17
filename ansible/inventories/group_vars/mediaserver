@@ -5,18 +5,19 @@ use_ssl: False
 # Set to 0 if you want to bind Nginx to ports 80:443 (default is 1024); 
 # Reference: https://sysctl-explorer.net/net/ipv4/ip_unprivileged_port_start/
 ip_unprivileged_port_start: 0
-
-#  Services to deploy
+# Services to deploy
 services:
   - name: bazarr
     active: False
     domain: subtitles
+    internal: True
     ports:
       - 6767:6767
 
   - name: deluge
     active: False
     domain: torrent
+    internal: True
     ports:
       - 58846:58846
       - 8112:8112
@@ -24,66 +25,75 @@ services:
   - name: flame
     active: False
     domain: home
+    internal: True
     ports:
       - 5005:5005
 
   - name: jackett
     active: False
     domain: tracker
+    internal: True
     ports:
       - 9117:9117
 
   - name: jellyfin
     active: False
     domain: play
+    internal: False
     ports:
       - 8096:8096
       - 1900:1900
       - 7359:7359
 
   - name: nginx
-    active: False
+    active: True
     domain: nginx
     ports:
-      - 80:80
-      # - 443:443
+      - 12080:80
+      - 12443:443
 
   - name: ombi
     active: False
     domain: requests
+    internal: False
     ports:
       - 3579:3579
 
   - name: pihole
     active: False
     domain: dns
+    internal: True
     ports:
-      - "8053:53/tcp"
-      - "8053:53/udp"
-      - "8067:67/udp"
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
       - "8010:80/tcp"
       - "8443:443/tcp"
 
   - name: planka
     active: False
     domain: tasks
+    internal: True
     ports:
       - 1337:1337
 
   - name: radarr
     active: False
     domain: movies
+    internal: True
     ports:
       - 7878:7878
 
   - name: mkdocs
     active: True
     domain: docs
+    internal: True
     ports:
       - 8000:8000
       
   - name: sonarr
     active: False
     domain: series
+    internal: True
     ports:
       - 8989:8989
