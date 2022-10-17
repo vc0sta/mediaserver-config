@@ -72,11 +72,11 @@ services:
     ports:
       - 7878:7878
 
-  - name: raneto
+  - name: mkdocs
     active: True
     domain: docs
     ports:
-      - 3000:3000
+      - 8000:8000
 
   - name: sonarr
     active: True

@@ -42,17 +42,15 @@
   tags:
     - nginx
 
-- name: generate raneto config
+- name: generate docs
   synchronize:
-    src: "{{ base_dir }}/raneto/{{ item }}"
-    dest: "{{ target_dir }}/raneto/"
-  when: "{{ (services |  selectattr('name', 'search', 'raneto') | list | first).active }}"
+    src: "{{ base_dir }}/mkdocs/{{ item }}"
+    dest: "{{ target_dir }}/mkdocs/"
+  when: "{{ (services |  selectattr('name', 'search', 'mkdocs') | list | first).active }}"
   with_items:
-    - config
-    - default
-  become: yes
+    - docs
   tags:
-    - raneto
+    - docs
 
 - name: Stop podman containers
   shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/podman-compose.yml down"
