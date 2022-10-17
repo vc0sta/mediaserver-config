@@ -30,7 +30,7 @@ services:
       - 9117:9117
 
   - name: jellyfin
-    active: True
+    active: False
     domain: play
     ports:
       - 8096:8096
@@ -73,7 +73,7 @@ services:
       - 7878:7878
 
   - name: sonarr
-    active: False
+    active: True
     domain: series
     ports:
       - 8989:8989
