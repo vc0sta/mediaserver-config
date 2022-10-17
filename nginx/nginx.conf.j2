@@ -160,7 +160,7 @@ server {
 #  Planka
 server {
     listen 80;
-    server_name {{ planka.domain }}{{ domain }} tasks;
+    server_name {{ planka.domain }}.{{ domain }} tasks;
 {% if use_ssl %}
     return 301 https://$server_name$request_uri;
 }
@@ -175,7 +175,7 @@ server {
         server_name  {{ planka.domain }}.{{ domain }};
 
         if ($host != $server_name) {
-            return 301 https://{{ planka.domain }}{{ domain }}$request_uri;
+            return 301 https://{{ planka.domain }}.{{ domain }}$request_uri;
         }
 {% endif %}
         location /socket.io {
