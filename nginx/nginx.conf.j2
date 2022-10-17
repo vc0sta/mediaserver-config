@@ -83,8 +83,10 @@ server {
 
     location / {
         proxy_pass http://bazarr:6767;
-	    {# allow {{ network_cidr }};
-        deny all; #}
+{% if bazarr.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
 
 
     }
@@ -111,8 +113,10 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-Host $http_host;
-	    {# allow {{ network_cidr }};
-        deny all; #}
+{% if pihole.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
    }
 }{% endif %}
 {% set flame = (services |  selectattr('name', 'search', 'flame') | list | first) %}
@@ -145,14 +149,18 @@ server {
             proxy_set_header Connection "upgrade";
             proxy_http_version 1.1;
             proxy_pass http://flame:5005/socket;
-            {# allow {{ network_cidr }};
-            deny all; #}
+{% if flame.internal %}
+            allow {{ network_cidr }};
+            deny all;
+{% endif %}
         }
 
         location / {
             proxy_pass http://flame:5005;
-            {# allow {{ network_cidr }};
-            deny all; #}
+{% if flame.internal %}
+            allow {{ network_cidr }};
+            deny all;
+{% endif %}
         }
 }{% endif %}
 {% set planka = (services |  selectattr('name', 'search', 'planka') | list | first) %}
@@ -183,14 +191,18 @@ server {
             proxy_set_header Connection "upgrade";
             proxy_http_version 1.1;
             proxy_pass http://planka:1337/socket.io;
-            {# allow {{ network_cidr }};
-            deny all; #}
+{% if planka.internal %}
+            allow {{ network_cidr }};
+            deny all;
+{% endif %}
         }
 
         location / {
             proxy_pass http://planka:1337;
-            {# allow {{ network_cidr }};
-            deny all; #}
+{% if planka.internal %}
+            allow {{ network_cidr }};
+            deny all;
+{% endif %}
         }
 
 }{% endif %}
@@ -212,8 +224,10 @@ server {
 
     location / {
         proxy_pass http://mkdocs:8000;
-	      # allow {{ network_cidr }};
-        # deny all;
+{% if mkdocs.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
 
 
     }
@@ -239,8 +253,10 @@ server {
 
     location / {
         proxy_pass http://deluge:8112;
-	    {# allow {{ network_cidr }};
-        deny all; #}
+{% if deluge.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
 
 
     }
@@ -264,8 +280,10 @@ server {
 
     location / {
         proxy_pass http://radarr:7878;
-	    {# allow {{ network_cidr }};
-        deny all; #}
+{% if radarr.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
 
     }
 }{% endif %}
@@ -289,8 +307,10 @@ server {
 
     location / {
         proxy_pass http://sonarr:8989;
-	    {# allow {{ network_cidr }};
-        deny all; #}
+{% if sonarr.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
     }
 }{% endif %}
 {% set jackett = (services |  selectattr('name', 'search', 'jackett') | list | first) %}
@@ -317,8 +337,10 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-Host $http_host;
         proxy_redirect off;
-	    {# allow {{ network_cidr }};
-        deny all; #}
+{% if jackett.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
 
 
     }
@@ -359,17 +381,29 @@ server {
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
+{% if ombi.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
         }
 
         # This allows access to the actual api
         location /api {
             proxy_pass http://ombi:3579;
+{% if ombi.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
         }
 
         # This allows access to the documentation for the api
         location /swagger {
             proxy_pass http://ombi:3579;
-    }
+{% if ombi.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
+        }
 }{% endif %}
 {% set jellyfin = (services |  selectattr('name', 'search', 'jellyfin') | list | first) %}
 {% if jellyfin.active %}
@@ -425,6 +459,10 @@ server {
 
     location = / {
         return 302 http://$host/web/;
+{% if jellyfin.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
     }
 
     location / {
@@ -440,6 +478,10 @@ server {
 
         # Disable buffering when the nginx proxy gets very resource heavy upon streaming
         proxy_buffering off;
+{% if jellyfin.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
     }
 
     # location block for /web - This is purely for aesthetics so /web/#!/ works instead of having to go to /web/index.html/#!/
@@ -453,6 +495,10 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-Protocol $scheme;
         proxy_set_header X-Forwarded-Host $http_host;
+{% if jellyfin.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
     }
 
     location /socket {
@@ -468,6 +514,10 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-Protocol $scheme;
         proxy_set_header X-Forwarded-Host $http_host;
+{% if jellyfin.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
     }
 }{% endif %}
 }
