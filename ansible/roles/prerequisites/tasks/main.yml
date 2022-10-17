@@ -72,6 +72,24 @@
   async: 60
   poll: 5
 
+- name: Copy Nginx default
+  copy:
+    src: "{{ base_dir }}/nginx/default.conf"
+    dest: "{{ target_dir }}/nginx/conf.d"
+  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+  tags:
+    - nginx
+
+
+- name: Copy services configuration for Nginx
+  template:
+    src: "{{ base_dir }}/{{ item.name }}/{{ item.name }}-nginx.conf.j2"
+    dest: "{{ target_dir }}/nginx/conf.d/{{ item.name }}-nginx.conf"
+  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active and item.active and item.name != 'nginx' }}" 
+  with_items: "{{ services }}"
+  tags:
+    - nginx
+
 - name: generate nginx config
   template:
     src: "{{ base_dir }}/nginx/nginx.conf.j2"
