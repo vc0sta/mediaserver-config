@@ -6,7 +6,7 @@ Sort: 0
 
 To configure SSH on your Respberry Pi, youo will need to enable sshd service in it:
 
-![Enabling SSH](%image_url%/ssh-enable.gif)
+![Enabling SSH](../images/ssh-enable.gif)
 
 Then add your public keys to *~/.ssh/authorized_keys*:
 
