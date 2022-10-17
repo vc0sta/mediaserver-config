@@ -2,8 +2,8 @@ ansible_connection: local
 
 use_ssl: False
 
- Services to deploy
-services: 
+#  Services to deploy
+services:
   - name: bazarr
     active: True
     domain: subtitles
@@ -83,4 +83,3 @@ services:
     domain: series
     ports:
       - 8989:8989
-      

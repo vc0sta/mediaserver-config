@@ -9,8 +9,8 @@ services:
       - PGID=1000
       - TZ={{ timezone }}
     volumes:
-      - ./config:/config
-      - ./default:/app/raneto/themes/default
+      - ./config:/config:Z
+      - ./default:/app/raneto/themes/default:Z
     ports:
 {% for port in (services |  selectattr('name', 'search', 'raneto') | list | first).ports %}
       - {{ port }}
