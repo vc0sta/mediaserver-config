@@ -105,6 +105,7 @@ services:
 # General
 storage_path: /tmp/storage
 timezone: America/Sao_Paulo
+create_hosts_entry: False
 
 # Network
 domain: domain.local
