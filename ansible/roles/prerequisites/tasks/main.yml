@@ -8,14 +8,24 @@
     - podman
     - podman-compose
   tags:
+    - podman
     - prerequisites
 
 - name: Create a podman network
   containers.podman.podman_network:
     name: "{{ container_network_name }}"
   tags:
+    - podman
     - prerequisites
 
+- name: Set unprivileged ports for podman to bind 80/433 to Nginx
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_unprivileged_port_start
+    value: 0
+    sysctl_set: yes
+    when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+  tags:
+    - prerequisites
 - name: ensure applications directory is in place
   file:
     path: "{{ target_dir }}/{{ item.name }}"
@@ -63,3 +73,8 @@
   when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
   tags:
     - nginx
+
+- debug:
+    msg: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+  tags:
+    - debug
