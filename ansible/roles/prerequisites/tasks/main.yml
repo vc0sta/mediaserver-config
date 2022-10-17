@@ -76,7 +76,12 @@
   tags:
     - nginx
 
-- debug:
-    msg: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+- lineinfile:
+    dest: /etc/hosts
+    line: "{{ '127.0.0.1' if inventory_hostname == 'localhost' else inventory_hostname }} {{ item.domain }}.{{ domain }}"
+    state: present
+  with_items: "{{ services }}"
+  when: item.active
+  become: yes
   tags:
-    - debug
+   - post
