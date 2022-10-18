@@ -22,7 +22,7 @@ services:
       - {{ port }}
 {% endfor %}
     environment:
-      - BASE_URL=http{{'s' if use_ssl else '' }}://{% for item in services %}{{ item.domain if item.name == 'planka' }}{% endfor %}{{ domain }}
+      - BASE_URL=http{{'s' if use_ssl else '' }}://{% for item in services %}{{ item.domain if item.name == 'planka' }}{% endfor %}.{{ domain }}
       - DATABASE_URL=postgresql://postgres@postgres/planka
       - SECRET_KEY=notsecretkey  
       - TRUST_PROXY=1
