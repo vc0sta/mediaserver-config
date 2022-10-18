@@ -45,6 +45,7 @@
   with_items: "{{ services }}"
   tags:
     - prerequisites
+    - nginx
 
 - name: generate docs
   synchronize:
@@ -72,10 +73,18 @@
   async: 60
   poll: 5
 
+- name: Ensure nginx conf.d directory is in place
+  file:
+    path: "{{ target_dir }}/nginx/conf.d"
+    state: directory
+  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+  tags:
+    - nginx
+
 - name: Copy Nginx default
   copy:
     src: "{{ base_dir }}/nginx/default.conf"
-    dest: "{{ target_dir }}/nginx/conf.d"
+    dest: "{{ target_dir }}/nginx/conf.d/default.conf"
   when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
   tags:
     - nginx
