@@ -1,0 +1,27 @@
+{% set pihole = (services |  selectattr('name', 'search', 'pihole') | list | first) %}
+# PiHole
+server {
+    listen       80;
+    server_name  {{ pihole.domain }}.{{ domain }};
+{% if use_ssl %}
+    return 301 https://$server_name$request_uri;
+    }
+
+server {
+    listen 443 ssl http2;
+    server_name  dns.{{ domain }};
+    ssl_session_cache builtin:1000;
+{% endif %}
+    location / {
+        proxy_pass http://pihole/admin/;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $http_host;
+{% if pihole.internal %}
+        allow {{ network_cidr }};
+        deny all;
+{% endif %}
+   }
+}

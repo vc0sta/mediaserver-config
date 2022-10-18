@@ -10,6 +10,7 @@ services:
 {% endfor %}
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:Z
+      - ./conf.d:/etc/nginx/conf.d:Z
       - ../Certbot-Godaddy/config:/etc/letsencrypt
     restart: unless-stopped
 
