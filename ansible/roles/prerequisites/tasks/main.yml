@@ -8,15 +8,13 @@
     - podman
     - podman-compose
   tags:
-    - podman
-    - prerequisites
+    - always
 
 - name: Create a podman network
   containers.podman.podman_network:
     name: "{{ container_network_name }}"
   tags:
-    - podman
-    - prerequisites
+    - always
 
 - name: Set unprivileged ports for podman to bind 80/433 to Nginx
   ansible.posix.sysctl:
@@ -26,6 +24,7 @@
   when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
   become: yes
   tags:
+    - nginx
     - prerequisites
 
 - name: ensure applications directory is in place
@@ -35,6 +34,7 @@
   when: item.active
   with_items: "{{ services }}"
   tags:
+    - nginx
     - prerequisites
 
 - name: Copy podman-compose files to each directory
