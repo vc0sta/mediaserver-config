@@ -56,22 +56,6 @@
     - docs
   tags:
     - docs
-    
-- name: Stop podman containers
-  shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/podman-compose.yml down"
-  ignore_errors: yes
-  with_items: "{{ services }}"
-  tags:
-    - stop
-
-- name: Start podman containers
-  shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/podman-compose.yml up -d"
-  when: item.active
-  with_items: "{{ services }}"
-  tags:
-    - start
-  async: 60
-  poll: 5
 
 - name: Ensure nginx conf.d directory is in place
   file:
@@ -89,12 +73,11 @@
   tags:
     - nginx
 
-
 - name: Copy services configuration for Nginx
   template:
     src: "{{ base_dir }}/{{ item.name }}/{{ item.name }}-nginx.conf.j2"
     dest: "{{ target_dir }}/nginx/conf.d/{{ item.name }}-nginx.conf"
-  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active and item.active and item.name != 'nginx' }}" 
+  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active and item.active and item.name != 'nginx' }}"
   with_items: "{{ services }}"
   tags:
     - nginx
@@ -107,11 +90,21 @@
   tags:
     - nginx
 
-- name: Start nginx
-  shell: "podman-compose -f {{ target_dir }}/nginx/podman-compose.yml restart"
-  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+- name: Stop podman containers
+  shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/podman-compose.yml down"
+  ignore_errors: yes
+  with_items: "{{ services }}"
   tags:
-    - nginx
+    - stop
+
+- name: Start podman containers
+  shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/podman-compose.yml up -d"
+  when: item.active
+  with_items: "{{ services }}"
+  tags:
+    - start
+  async: 60
+  poll: 5
 
 - name: Make sure to remove previous added lines
   lineinfile:
@@ -121,7 +114,7 @@
   when: create_hosts_entry
   become: yes
   tags:
-   - post
+    - post
 
 - lineinfile:
     dest: /etc/hosts
@@ -131,4 +124,4 @@
   when: item.active and create_hosts_entry
   become: yes
   tags:
-   - post
+    - post
