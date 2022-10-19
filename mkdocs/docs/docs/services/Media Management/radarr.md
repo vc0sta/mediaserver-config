@@ -1,17 +1,19 @@
-/*
+---
 Title: Radarr
 Description: Movies Service
-*/
+---
 
 [Radarr](https://github.com/Radarr/Radarr) - A fork of Sonarr to work with movies à la Couchpotato.
 
 ## Table of contents
+
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
 - [NGINX](#nginx)
 - [Related Tutorials](#related-tutorials)
 
 ## Folder Structure
+
 ```
 radarr
 ├── config
@@ -19,6 +21,7 @@ radarr
 ```
 
 ## Docker-compose
+
 ```yaml
 version: "2.1"
 services:
@@ -48,14 +51,16 @@ services:
 server {
     listen       80;
     server_name  movies.EXAMPLE.COM;
-    
+
 
     location / {
         proxy_pass http://radarr:7878;
     }
 }
 ```
+
 ### HTTPS
+
 ```perl
 # Radarr
 server {
@@ -77,9 +82,11 @@ server {
     }
 }
 ```
+
 ## Related Tutorials
 
 > TODO:
- - Create profile
- - Connect to Deluge
- - Telegram Notification
+
+- Create profile
+- Connect to Deluge
+- Telegram Notification

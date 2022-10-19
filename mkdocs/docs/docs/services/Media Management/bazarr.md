@@ -1,11 +1,12 @@
-/*
+---
 Title: Bazarr
 Description: Subtitles Service
-*/
+---
 
 [Bazarr](https://www.bazarr.media/) is a companion application to Sonarr and Radarr. It can manage and download subtitles based on your requirements. You define your preferences by TV show or movie and Bazarr takes care of everything for you.
 
 ## Table of contents
+
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
 - [NGINX](#nginx)
@@ -20,7 +21,8 @@ bazarr
 └── update_libseccomp_rpi4.sh  # Script to install libseccomp on Raspberry Pi 4
 ```
 
-> **Note:** I do not remember why I needed to install libseccomp, but I kept the commands I've used in *update_libseccomp_rpi4.sh* file.
+> **Note:** I do not remember why I needed to install libseccomp, but I kept the commands I've used in _update_libseccomp_rpi4.sh_ file.
+
 ## Docker-compose
 
 ```yaml
@@ -41,9 +43,11 @@ services:
       - 6767:6767
     restart: unless-stopped
 ```
+
 ## NGINX
 
 ### HTTP
+
 ```perl
 # Bazarr
 server {
@@ -55,7 +59,9 @@ server {
     }
 }
 ```
+
 ### HTTPS
+
 ```perl
 # Bazarr
 server {

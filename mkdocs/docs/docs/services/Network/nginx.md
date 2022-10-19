@@ -1,11 +1,12 @@
-/*
+---
 Title: NGINX
 Description: Reverse Proxy Service
-*/
+---
 
 [Nginx](https://www.nginx.com/), stylized as NGIИX, is a web server that can also be used as a reverse proxy, load balancer, mail proxy and HTTP cache.
 
 ## Table of contents
+
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
 - [Integration](#integration)
@@ -26,8 +27,7 @@ nginx
 ## Docker-compose
 
 ```yaml
-
-version: '3'
+version: "3"
 services:
   nginx:
     image: nginx
@@ -47,6 +47,7 @@ networks:
     external:
       name: apps
 ```
+
 ## Integration
 
 > TODO: Network diagram
@@ -54,6 +55,7 @@ networks:
 ## Related Tutorials
 
 > TODO:
- - Tutorial adding a service do nginx.conf
-    - deny external access
- - How to use nginx templating
+
+- Tutorial adding a service do nginx.conf
+  - deny external access
+- How to use nginx templating

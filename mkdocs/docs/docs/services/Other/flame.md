@@ -1,17 +1,20 @@
-/*
+---
 Title: Flame
 Description: Homepage Service
 Sort: 1
-*/
+---
 
 [Flame](https://github.com/pawelmalak/flame) is a self-hosted startpage for your server. Its design is inspired (heavily) by SUI. Flame is very easy to setup and use. With built-in editors, it allows you to setup your very own application hub in no time - no file editing necessary.
 
 ## Table of contents
+
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
 - [NGINX](#nginx)
 - [Related Tutorials](#related-tutorials)
+
 ## Folder Structure
+
 ```
 flame
 ├── data
@@ -32,12 +35,13 @@ services:
       - 5005:5005
     restart: unless-stopped
 ```
+
 ## NGINX
 
 ### HTTP
 
 ```perl
-# Flame 
+# Flame
 server {
     listen 80 default_server;
     server_name home.EXAMPLE.COM home;
@@ -48,9 +52,11 @@ server {
 }
 
 ```
+
 ### HTTPS
+
 ```perl
-# Flame 
+# Flame
 server {
     listen 80 default_server;
     server_name home.EXAMPLE.COM home;
@@ -84,8 +90,10 @@ server {
         }
 }
 ```
+
 ## Related Tutorials
 
-> TODO: 
- - Add applications on homepage
- - Configure Weather
+> TODO:
+
+- Add applications on homepage
+- Configure Weather

@@ -1,15 +1,15 @@
-/*
+---
 Title: Portainer
 Description: Container Management Service
-*/
+---
 
 [Portainer](https://www.portainer.io) is a self-service container service delivery platform. It is the definitive container management GUI for Kubernetes, Docker and Swarm.
 
 ## Table of contents
+
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
 - [NGINX](#nginx)
-
 
 ## Folder Structure
 
@@ -20,36 +20,41 @@ portainer
 ```
 
 ## Docker-compose
+
 ```yaml
-version: '2'
+version: "2"
 services:
   portainer:
     image: portainer/portainer-ce
-    command: -H unix:///var/run/docker.sock 
+    command: -H unix:///var/run/docker.sock
     container_name: portainer
     restart: unless-stopped
     ports:
       - 9000:9000
       # - 8000:8000
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock  # Portainer needs to connect to your host docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock # Portainer needs to connect to your host docker.sock
       - ./data:/data
 ```
+
 ## NGINX
 
 ### HTTP
+
 ```perl
 # Portainer
 server {
    listen       80;
    server_name  admin.EXAMPLE.COM;
-    
+
    location / {
        proxy_pass http://portainer:9000;
    }
 }
 ```
+
 ### HTTPS
+
 ```perl
 # Portainer
 server {

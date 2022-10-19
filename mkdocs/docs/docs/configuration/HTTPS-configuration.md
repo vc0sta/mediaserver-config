@@ -1,12 +1,13 @@
-/*
+---
 Title: TLS/SSL Configuration
 Description: TLS SSL HTTPS
 Sort: 4
-*/
+---
 
 To renew my TLS certificates, I'm using the scripts from [Certbot-Godaddy](https://github.com/orthrus/Certbot-Godaddy). It's usage is very simple:
 
-Create a new [API Key](https://developer.godaddy.com/keys), and set your credentials at *api-settings.sh*:
+Create a new [API Key](https://developer.godaddy.com/keys), and set your credentials at _api-settings.sh_:
+
 ```bash
 ############################################################
 # Domain settings
@@ -22,7 +23,8 @@ GODADDY_URL="https://api.godaddy.com/"
 ############################################################
 ```
 
-Then run *certbot-godaddy-request.sh*:
+Then run _certbot-godaddy-request.sh_:
+
 ```bash
 # Give execute permissions to the script
 chmod +x certbot-godaddy-request.sh

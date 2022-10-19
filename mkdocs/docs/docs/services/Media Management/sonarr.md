@@ -1,17 +1,19 @@
-/*
+---
 Title: Sonarr
 Description: Series Service
-*/
+---
 
 [Sonarr](https://sonarr.tv/) (formerly NZBdrone) is a PVR for usenet and bittorrent users. It can monitor multiple RSS feeds for new episodes of your favorite shows and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available.
 
 ## Table of contents
+
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
 - [NGINX](#nginx)
 - [Related Tutorials](#related-tutorials)
 
 ## Folder Structure
+
 ```
 sonarr
 ├── config
@@ -19,6 +21,7 @@ sonarr
 ```
 
 ## Docker-compose
+
 ```yaml
 version: "2.1"
 services:
@@ -37,7 +40,9 @@ services:
       - 8989:8989
     restart: unless-stopped
 ```
+
 ## NGINX
+
 ### HTTP
 
 ```perl
@@ -51,7 +56,9 @@ server {
     }
 }
 ```
+
 ### HTTPS
+
 ```perl
 # Sonarr
 server {
@@ -76,7 +83,8 @@ server {
 
 ## Related Tutorials
 
-> TODO: 
+> TODO:
+
     - Connect to Deluge
     - Connect to Jackett
     - Connect to Jellyfin
