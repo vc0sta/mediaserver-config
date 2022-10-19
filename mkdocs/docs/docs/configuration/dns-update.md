@@ -1,16 +1,17 @@
-/*
+---
 Title: DNS Update
 Description: DNS
 Sort: 3
-*/
+---
 
-My internet has no fixed IP address, so I had to update it manually everytime the connection is interrupted and a new IP is assigned. 
+My internet has no fixed IP address, so I had to update it manually everytime the connection is interrupted and a new IP is assigned.
 
 To solve it, I created a little shellscript to check the current IP configuration at GoDaddy (my DNS provider) and the current WAN IP address of my network.
 
 If those values don't match, then I update the DNS with my new IP.
 
 Here is the script:
+
 ```bash
 #!/usr/bin/bash
 
@@ -31,7 +32,7 @@ do
 done
 ```
 
-I'm using [daddy](https://github.com/artberri/daddy) to manage my DNS records, it requires to setup a *key/secret* at **${HOME}/.daddy.yaml**. 
+I'm using [daddy](https://github.com/artberri/daddy) to manage my DNS records, it requires to setup a _key/secret_ at **\${HOME}/.daddy.yaml**.
 
 Create a new [API Key](https://developer.godaddy.com/keys), then add it's values like:
 

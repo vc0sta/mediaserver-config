@@ -1,9 +1,8 @@
-/*
+---
 Title: Mounting the External Storage
 Description: Storage
 Sort: 1
-*/
-
+---
 
 You can mount your storage device at a specific folder location. It is conventional to do this within the `/mnt` folder, for example `/mnt/storage`. Note that the folder must be empty.
 
@@ -16,6 +15,7 @@ List all the disk partitions on the Raspberry Pi using the following command:
 ```
 
 You should get an output like this:
+
 ```
 UUID                                 NAME        FSTYPE    SIZE MOUNTPOINT       LABEL   MODEL
                                      loop0       squashfs 84.4M /snap/core/11321
@@ -46,6 +46,7 @@ sudo apt install ntfs-3g
 ```
 
 Run the following command to get the location of the disk partition:
+
 ```
 sudo blkid
 ```
@@ -53,16 +54,19 @@ sudo blkid
 For example, `/dev/sda1`.
 
 Create a target folder to be the mount point of the storage device. The mount point name used in this case is `storage`. You can specify a name of your choice:
+
 ```
 sudo mkdir /mnt/storage
 ```
 
 Mount the storage device at the mount point you created:
+
 ```
 sudo mount /dev/sda1 /mnt/storage
 ```
 
 Verify that the storage device is mounted successfully by listing the contents:
+
 ```
 ls /mnt/storage
 ```
@@ -80,11 +84,13 @@ sudo blkid
 Find the disk partition from the list and note the UUID. For example, 5C24-1453.
 
 Open the fstab file using a command line editor such as nano:
+
 ```
 sudo nano /etc/fstab
 ```
 
 Add the following line in the fstab file:
+
 ```
 UUID=6088-A250 /mnt/storage fstype users,defaults,uid=1000,gid=1000,umask=0022,auto,rw,nofail,umask=000,x-systemd.device-timeout=30 0 0
 ```
@@ -94,4 +100,5 @@ Replace fstype with the type of your file system, for example: exfat.
 If the filesystem type is FAT or NTFS, add ,umask=000 immediately after nofail - this will allow all users full read/write access to every file on the storage device.
 
 ---
+
 This page was taken from the [Official Documentation](https://www.raspberrypi.com/documentation/computers/configuration.html#mounting-a-storage-device), please refer to it for more information.

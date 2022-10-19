@@ -1,11 +1,12 @@
-/*
+---
 Title: Deluge
 Description: Torrent Service
-*/
+---
 
 [Deluge](http://deluge-torrent.org/) is a lightweight, Free Software, cross-platform BitTorrent client.
 
 ## Table of contents
+
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
 - [NGINX](#nginx)
@@ -18,7 +19,9 @@ deluge
 ├── config                 # Service data
 └── docker-compose.yml     # Service configuration
 ```
+
 ## Docker-compose
+
 ```yaml
 ---
 version: "2.1"
@@ -32,7 +35,7 @@ services:
       - TZ=${TZ}
       - DELUGE_LOGLEVEL=info
     volumes:
-      - './config:/config'
+      - "./config:/config"
       - ${STORAGE_PATH}/downloads:/downloads
     ports:
       - 58846:58846
@@ -56,7 +59,7 @@ TZ=America/Sao_Paulo
 server {
     listen       80;
     server_name  torrent.EXAMPLE.COM;
-    
+
     location / {
         proxy_pass http://deluge:8112;
     }
@@ -90,6 +93,6 @@ server {
 ## Related Tutorials
 
 > TODO:
- - Login First time
- - Configure Scheduling
 
+- Login First time
+- Configure Scheduling

@@ -1,9 +1,10 @@
-/*
+---
 Title: PiHole
 Description: DNS Service
-*/
+---
 
 ## Table of contents
+
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
 - [Integration](#integration)
@@ -41,8 +42,8 @@ services:
       TZ: ${TZ}
       WEBPASSWORD: ${PASSWORD}
     volumes:
-      - './etc-pihole/:/etc/pihole/'
-      - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
+      - "./etc-pihole/:/etc/pihole/"
+      - "./etc-dnsmasq.d/:/etc/dnsmasq.d/"
     # Recommended but not required (DHCP needs NET_ADMIN)
     #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
     cap_add:
@@ -58,18 +59,21 @@ TZ=America/Sao_Paulo
 PASSWORD='password'
 
 ```
+
 ## Integration
+
 > TODO: Network diagram
 
 ## NGINX
 
 ### HTTP
+
 ```perl
 # PiHole
 server {
     listen       80;
     server_name  hole.EXAMPLE.COM;
-        
+
     location / {
         proxy_pass http://pihole/admin/;
    }
@@ -77,6 +81,7 @@ server {
 ```
 
 ### HTTPS
+
 ```perl
 # PiHole
 server {
@@ -92,7 +97,7 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/EXAMPLE.COM/privkey.pem;
     ssl_session_cache builtin:1000;
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    
+
     location / {
         proxy_pass http://pihole/admin/;
         proxy_set_header Host $http_host;
@@ -107,5 +112,6 @@ server {
 ## Related Tutorials
 
 > TODO:
- - Use PiHole as internal DNS
- - Add block lists
+
+- Use PiHole as internal DNS
+- Add block lists

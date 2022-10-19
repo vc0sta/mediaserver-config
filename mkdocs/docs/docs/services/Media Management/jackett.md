@@ -1,22 +1,25 @@
-/*
+---
 Title: Jackett
 Description: Tracker Service
-*/
+---
 
 [Jackett](https://github.com/Jackett/Jackett) works as a proxy server: it translates queries from apps (Sonarr, SickRage, CouchPotato, Mylar, etc) into tracker-site-specific http queries, parses the html response, then sends results back to the requesting software. This allows for getting recent uploads (like RSS) and performing searches. Jackett is a single repository of maintained indexer scraping & translation logic - removing the burden from other apps.
 
 ## Table of contents
+
 - [Folder Structure](#folder-structure)
 - [Docker-compose](#docker-compose)
 - [NGINX](#nginx)
 - [Related Tutorials](#related-tutorials)
 
 ## Folder Structure
+
 ```
 jackett
 ├── config              # Service data
 └── docker-compose.yml  # Service configuration
 ```
+
 ## Docker-compose
 
 ```yaml
@@ -38,6 +41,7 @@ services:
       - 9117:9117
     restart: unless-stopped
 ```
+
 ## NGINX
 
 ### HTTP
@@ -53,7 +57,9 @@ server {
     }
 }
 ```
+
 ### HTTPS
+
 ```perl
 # Jackett
 server {
@@ -80,9 +86,10 @@ server {
     }
 }
 ```
+
 ## Related Tutorials
 
-> TODO: 
-  - Add trackers
-  - Integrate with Radarr/Sonarr
+> TODO:
 
+- Add trackers
+- Integrate with Radarr/Sonarr

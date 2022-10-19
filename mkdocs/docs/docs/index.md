@@ -1,21 +1,24 @@
-/*
+---
 Title: Mediaserver
 Description: Home
-*/
+---
 
 This is the knowledgebase to configure your own mediaserver.
 
 The current scripts and service are currently running in a Raspberry Pi 4, but everything should work on any other hardware with container capabilities.
 
 ## Overview
+
 The Mediaserver project started with the objective of creating a self-hosted media solution with automated downloads for movies and series via torrent. But as it evolved, the scope became bigger and bigger, and now it is running all of my self hosted services.
 
-
 ## Table of contents
-- [Hardware Specifications](#hardware-specifications)
+
+- [Overview](#overview)
+- [Table of contents](#table-of-contents)
+  - [Hardware Specifications](#hardware-specifications)
 - [Integration](#integration)
-    - [Services](#services)
-    - [Volumes](#volumes)
+  - [Services](#services)
+  - [Volumes](#volumes)
 
 ### Hardware Specifications
 
@@ -23,17 +26,17 @@ The server itself has nothing special regarding hardware:
 
 - RaspberryPi 4
 - 7TB external Harddrive
-    - mounted in '/mnt/storage'
+  - mounted in '/mnt/storage'
 
 ## Integration
 
 ### Services
 
-This is diagram shows how the services interact with themselves since a new media is *requested* until it become available to be *reproduced*:
+This is diagram shows how the services interact with themselves since a new media is _requested_ until it become available to be _reproduced_:
 
 ![Media Management Diagram](images/media-management-flow-diagram.png)
 
-1. User create a new *request* via **requests.DOMAIN**;
+1. User create a new _request_ via **requests.DOMAIN**;
 2. **Ombi** is integrated with **Jellyfin**, so there will be no duplicates;
 3. Depending on which kind of media is requested, it will notify **Sonarr** or **Radarr**;
 4. **Sonarr/Radarr** will fetch download options from the **Jackett**
@@ -44,16 +47,16 @@ This is diagram shows how the services interact with themselves since a new medi
 
 ### Volumes
 
-Apart from the diagram above, we have some interaction at a **volume** level, this is why some services have some *volume mapping* in common. The diagram below illustrates that:
+Apart from the diagram above, we have some interaction at a **volume** level, this is why some services have some _volume mapping_ in common. The diagram below illustrates that:
 
 ![Volume Mapping Diagram](images/volumes-diagram.png)
 
 1. A new file is donwloaded into **Downloads** folder;
-2. **Sonarr/Radarr** creates a *hard link* of the media files to **Movies** or **Series**; (*)
+2. **Sonarr/Radarr** creates a _hard link_ of the media files to **Movies** or **Series**; (\*)
 3. **Bazarr** gets notified a new file arrived, and download subtitles into this folders;
 4. **Jellyfin** then serves the downloaded media from the latter;
 
-The *hard link* strategy, allows us to keep the **same file** in 2+ different folders. This way we can keep the folder structure to **Deluge** be able to seed those files, and we can organize our library to **Jellyfin** without duplicating any files.
+The _hard link_ strategy, allows us to keep the **same file** in 2+ different folders. This way we can keep the folder structure to **Deluge** be able to seed those files, and we can organize our library to **Jellyfin** without duplicating any files.
 
 At **downloads** folder you have something like this:
 
@@ -90,4 +93,4 @@ series
 :
 ```
 
-> **Note:** Once the torrent stops seeding the file will be copied, so always check your available storage and clean it up periodically. 
+> **Note:** Once the torrent stops seeding the file will be copied, so always check your available storage and clean it up periodically.
