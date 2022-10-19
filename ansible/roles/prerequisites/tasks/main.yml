@@ -8,15 +8,13 @@
     - podman
     - podman-compose
   tags:
-    - podman
-    - prerequisites
+    - always
 
 - name: Create a podman network
   containers.podman.podman_network:
     name: "{{ container_network_name }}"
   tags:
-    - podman
-    - prerequisites
+    - always
 
 - name: Set unprivileged ports for podman to bind 80/433 to Nginx
   ansible.posix.sysctl:
@@ -26,6 +24,7 @@
   when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
   become: yes
   tags:
+    - nginx
     - prerequisites
 
 - name: ensure applications directory is in place
@@ -35,6 +34,7 @@
   when: item.active
   with_items: "{{ services }}"
   tags:
+    - nginx
     - prerequisites
 
 - name: Copy podman-compose files to each directory
@@ -45,6 +45,7 @@
   with_items: "{{ services }}"
   tags:
     - prerequisites
+    - nginx
 
 - name: generate docs
   synchronize:
@@ -55,7 +56,40 @@
     - docs
   tags:
     - docs
-    
+
+- name: Ensure nginx conf.d directory is in place
+  file:
+    path: "{{ target_dir }}/nginx/conf.d"
+    state: directory
+  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+  tags:
+    - nginx
+
+- name: Copy Nginx default
+  copy:
+    src: "{{ base_dir }}/nginx/default.conf"
+    dest: "{{ target_dir }}/nginx/conf.d/default.conf"
+  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+  tags:
+    - nginx
+
+- name: Copy services configuration for Nginx
+  template:
+    src: "{{ base_dir }}/{{ item.name }}/{{ item.name }}-nginx.conf.j2"
+    dest: "{{ target_dir }}/nginx/conf.d/{{ item.name }}-nginx.conf"
+  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active and item.active and item.name != 'nginx' }}"
+  with_items: "{{ services }}"
+  tags:
+    - nginx
+
+- name: generate nginx config
+  template:
+    src: "{{ base_dir }}/nginx/nginx.conf.j2"
+    dest: "{{ target_dir }}/nginx/nginx.conf"
+  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
+  tags:
+    - nginx
+
 - name: Stop podman containers
   shell: "podman-compose -f {{ target_dir }}/{{ item.name }}/podman-compose.yml down"
   ignore_errors: yes
@@ -72,38 +106,6 @@
   async: 60
   poll: 5
 
-- name: Copy Nginx default
-  copy:
-    src: "{{ base_dir }}/nginx/default.conf"
-    dest: "{{ target_dir }}/nginx/conf.d"
-  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
-  tags:
-    - nginx
-
-
-- name: Copy services configuration for Nginx
-  template:
-    src: "{{ base_dir }}/{{ item.name }}/{{ item.name }}-nginx.conf.j2"
-    dest: "{{ target_dir }}/nginx/conf.d/{{ item.name }}-nginx.conf"
-  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active and item.active and item.name != 'nginx' }}" 
-  with_items: "{{ services }}"
-  tags:
-    - nginx
-
-- name: generate nginx config
-  template:
-    src: "{{ base_dir }}/nginx/nginx.conf.j2"
-    dest: "{{ target_dir }}/nginx/nginx.conf"
-  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
-  tags:
-    - nginx
-
-- name: Start nginx
-  shell: "podman-compose -f {{ target_dir }}/nginx/podman-compose.yml restart"
-  when: "{{ (services |  selectattr('name', 'search', 'nginx') | list | first).active }}"
-  tags:
-    - nginx
-
 - name: Make sure to remove previous added lines
   lineinfile:
     path: /etc/hosts
@@ -112,7 +114,7 @@
   when: create_hosts_entry
   become: yes
   tags:
-   - post
+    - post
 
 - lineinfile:
     dest: /etc/hosts
@@ -122,4 +124,4 @@
   when: item.active and create_hosts_entry
   become: yes
   tags:
-   - post
+    - post
