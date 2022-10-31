@@ -1,2 +1,8 @@
-[mediaserver]
+[mediaserver:children]
+vcosta
+
+# This group was created to keep all secrets/specific values of my setup.
+# By making it a children from mediaserver, the values defined in it will have
+# a precedence over the ones in `mediaserver`
+[vcosta]
 localhost
