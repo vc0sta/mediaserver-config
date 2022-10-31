@@ -31,13 +31,6 @@ services:
     ports:
       - 5005:5005
 
-  - name: jackett
-    active: False
-    domain: tracker
-    internal: False
-    ports:
-      - 9117:9117
-
   - name: jellyfin
     active: False
     domain: play
