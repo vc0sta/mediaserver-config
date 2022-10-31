@@ -1,9 +1,11 @@
+---
 # Directories
 base_dir: "../../../.."
 target_dir: /tmp/mediaserver
 
 # Set to 0 if you want to bind Nginx to ports 80:443
-# Systems default is 1024. Reference: https://sysctl-explorer.net/net/ipv4/ip_unprivileged_port_start/
+# Systems default is 1024.
+# Reference: https://sysctl-explorer.net/net/ipv4/ip_unprivileged_port_start/
 ip_unprivileged_port_start: 1024
 
 # Podman
@@ -12,61 +14,54 @@ container_network_name: apps
 # Services to deploy
 services:
   - name: bazarr
-    active: True
+    active: true
     domain: subtitles
-    internal: True
+    internal: true
     ports:
       - 6767:6767
 
   - name: deluge
-    active: True
+    active: true
     domain: torrent
-    internal: True
+    internal: true
     ports:
       - 58846:58846
       - 8112:8112
 
   - name: flame
-    active: True
+    active: true
     domain: home
-    internal: True
+    internal: true
     ports:
       - 5005:5005
 
-  - name: jackett
-    active: True
-    domain: tracker
-    internal: True
-    ports:
-      - 9117:9117
-
   - name: jellyfin
-    active: True
+    active: true
     domain: play
-    internal: False
+    internal: false
     ports:
       - 8096:8096
       - 1900:1900
       - 7359:7359
 
   - name: nginx
-    active: True
+    active: true
     domain: nginx
     ports:
       - 12080:80
       - 12443:443
 
   - name: ombi
-    active: True
+    active: true
     domain: requests
-    internal: False
+    internal: false
     ports:
       - 3579:3579
 
   - name: pihole
-    active: True
+    active: true
     domain: dns
-    internal: True
+    internal: true
     ports:
       - "53:53/tcp"
       - "53:53/udp"
@@ -75,37 +70,37 @@ services:
       - "8443:443/tcp"
 
   - name: planka
-    active: True
+    active: true
     domain: tasks
-    internal: True
+    internal: true
     ports:
       - 1337:1337
 
   - name: radarr
-    active: True
+    active: true
     domain: movies
-    internal: True
+    internal: true
     ports:
       - 7878:7878
 
   - name: mkdocs
-    active: True
+    active: true
     domain: docs
-    internal: True
+    internal: true
     ports:
       - 8000:8000
-      
+
   - name: sonarr
-    active: True
+    active: true
     domain: series
-    internal: True
+    internal: true
     ports:
       - 8989:8989
 
 # General
 storage_path: /tmp/storage
 timezone: America/Sao_Paulo
-create_hosts_entry: False
+create_hosts_entry: false
 
 # Network
 domain: domain.local
@@ -113,14 +108,14 @@ server_ip: 192.168.0.104
 network_cidr: 192.168.77.0/24
 
 # Nginx
-use_ssl: False
+use_ssl: false
 tls_chain: /etc/letsencrypt/live/{{ domain }}/fullchain.pem
 tls_privkey: /etc/letsencrypt/live/{{ domain }}/privkey.pem
 tls_trusted_certificate: /etc/letsencrypt/live/{{ domain }}/chain.pem
 
 # Jellyfin
-server_url: "play.{{domain}}" # play.domain.local
+server_url: "play.{{domain}}"    # play.domain.local
 
 # Pihole
-pihole_domain: hole.pi # TODO fix
+pihole_domain: hole.pi           # TODO fix
 password: "password"

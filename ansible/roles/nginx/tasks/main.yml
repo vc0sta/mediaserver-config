@@ -1,0 +1,50 @@
+---
+- name: "Set variables"
+  set_fact:
+    nginx_active: >-
+      {{ (services |  selectattr('name', 'search', 'nginx') |
+              list | first).active }}
+
+- name: Set unprivileged ports for podman to bind 80/433 to Nginx
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_unprivileged_port_start
+    value: "{{ ip_unprivileged_port_start }}"
+    sysctl_set: true
+  when: nginx_active
+  become: true
+  tags:
+    - nginx
+    - prerequisites
+
+- name: Ensure nginx conf.d directory is in place
+  file:
+    path: "{{ target_dir }}/nginx/conf.d"
+    state: directory
+  when: nginx_active
+  tags:
+    - nginx
+
+- name: Copy Nginx default
+  copy:
+    src: "{{ base_dir }}/nginx/default.conf"
+    dest: "{{ target_dir }}/nginx/conf.d/default.conf"
+  when: nginx_active
+  tags:
+    - nginx
+
+- name: Copy services configuration for Nginx
+  template:
+    src: "{{ base_dir }}/{{ item.name }}/{{ item.name }}-nginx.conf.j2"
+    dest: "{{ target_dir }}/nginx/conf.d/{{ item.name }}-nginx.conf"
+  when: "{{ nginx_active and item.active and item.name != 'nginx' }}"
+  with_items: "{{ services }}"
+  tags:
+    - nginx
+
+- name: generate nginx config
+  template:
+    src: "{{ base_dir }}/nginx/nginx.conf.j2"
+    dest: "{{ target_dir }}/nginx/nginx.conf"
+  when: nginx_active
+  tags:
+    - nginx

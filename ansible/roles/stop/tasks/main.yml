@@ -1,0 +1,10 @@
+---
+- name: Stop podman containers
+  shell: |
+     podman-compose \
+     -f {{ target_dir }}/{{ item.name }}/podman-compose.yml \
+     down
+  ignore_errors: true
+  with_items: "{{ services }}"
+  tags:
+    - stop

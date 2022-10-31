@@ -1,0 +1,6 @@
+---
+- name: "Create cronjob to update DNS entrys"
+  cron:
+    name: "Update DNS entrys"
+    minute: "*/30"
+    job: "{{ target_dir }}/scripts/daddy-autoupdate.sh"

@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+DOMAIN={{ domain }}
+SUBDOMAINS=({{ exposed_services }})
+CREDENTIALS="--key={{ godaddy_api_key }} --secret={{ godaddy_api_secret }}"
+DESIRED_IP=$(curl ifconfig.me -s)
+
+for SUBDOMAIN in "${SUBDOMAINS[@]}"
+do
+  CURRENT_IP=$(/usr/local/bin/daddy show ${CREDENTIALS} -d ${DOMAIN} -n ${SUBDOMAIN} -t A | grep ${SUBDOMAIN} | cut -d"|" -f 3)
+
+  if [ ! $CURRENT_IP = $DESIRED_IP ];
+    then /usr/local/bin/daddy update ${CREDENTIALS} --domain ${DOMAIN} -t A -n ${SUBDOMAIN} -v ${DESIRED_IP};
+      echo $(date +"%Y-%m-%d %H:%M") Updating $SUBDOMAIN.$DOMAIN from $CURRENT_IP to $DESIRED_IP 
+    fi
+done

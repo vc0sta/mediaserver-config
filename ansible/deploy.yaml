@@ -2,3 +2,7 @@
 - hosts: localhost
   roles:
     - prerequisites
+    # - godaddy
+    - nginx
+    - stop
+    - start

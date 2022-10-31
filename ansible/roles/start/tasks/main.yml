@@ -1,0 +1,12 @@
+---
+- name: Start podman containers
+  shell: |
+    podman-compose \
+    -f {{ target_dir }}/{{ item.name }}/podman-compose.yml \
+    up -d
+  when: item.active
+  with_items: "{{ services }}"
+  tags:
+    - start
+  async: 60
+  poll: 5
