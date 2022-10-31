@@ -2,7 +2,7 @@
 version: '3'
 services:
   nginx:
-    image: nginx
+    image: docker.io/library/nginx
     container_name: nginx
     ports:
 {% for port in (services |  selectattr('name', 'search', 'nginx') | list | first).ports %}
